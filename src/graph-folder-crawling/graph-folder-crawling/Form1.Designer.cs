@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.Title = new System.Windows.Forms.Label();
-            this.Line = new System.Windows.Forms.Label();
             this.inputLabel = new System.Windows.Forms.Label();
             this.startingDirectoryLabel = new System.Windows.Forms.Label();
             this.startingDirectoryButton = new System.Windows.Forms.Button();
@@ -40,34 +39,35 @@
             this.radioButtonBFS = new System.Windows.Forms.RadioButton();
             this.radioButtonDFS = new System.Windows.Forms.RadioButton();
             this.searchButton = new System.Windows.Forms.Button();
+            this.InputPanel = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.logoPanel = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.panelTitle = new System.Windows.Forms.Panel();
+            this.Line = new System.Windows.Forms.Label();
+            this.InputPanel.SuspendLayout();
+            this.logoPanel.SuspendLayout();
+            this.panelTitle.SuspendLayout();
             this.SuspendLayout();
             // 
             // Title
             // 
-            this.Title.AutoSize = true;
+            this.Title.Dock = System.Windows.Forms.DockStyle.Top;
             this.Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F);
-            this.Title.Location = new System.Drawing.Point(209, 9);
+            this.Title.Location = new System.Drawing.Point(0, 0);
             this.Title.Name = "Title";
-            this.Title.Size = new System.Drawing.Size(485, 31);
+            this.Title.Size = new System.Drawing.Size(586, 85);
             this.Title.TabIndex = 0;
-            this.Title.Text = "MencariNafasPertama - Folder Crawler";
-            // 
-            // Line
-            // 
-            this.Line.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Line.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Line.Location = new System.Drawing.Point(26, 50);
-            this.Line.Name = "Line";
-            this.Line.Size = new System.Drawing.Size(850, 2);
-            this.Line.TabIndex = 1;
+            this.Title.Text = "Folder Crawler";
+            this.Title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // inputLabel
             // 
             this.inputLabel.AutoSize = true;
-            this.inputLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F);
-            this.inputLabel.Location = new System.Drawing.Point(21, 61);
+            this.inputLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F);
+            this.inputLabel.Location = new System.Drawing.Point(22, 107);
             this.inputLabel.Name = "inputLabel";
-            this.inputLabel.Size = new System.Drawing.Size(65, 29);
+            this.inputLabel.Size = new System.Drawing.Size(82, 36);
             this.inputLabel.TabIndex = 2;
             this.inputLabel.Text = "Input";
             // 
@@ -75,7 +75,7 @@
             // 
             this.startingDirectoryLabel.AutoSize = true;
             this.startingDirectoryLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.startingDirectoryLabel.Location = new System.Drawing.Point(22, 99);
+            this.startingDirectoryLabel.Location = new System.Drawing.Point(26, 151);
             this.startingDirectoryLabel.Name = "startingDirectoryLabel";
             this.startingDirectoryLabel.Size = new System.Drawing.Size(185, 20);
             this.startingDirectoryLabel.TabIndex = 3;
@@ -83,21 +83,26 @@
             // 
             // startingDirectoryButton
             // 
+            this.startingDirectoryButton.BackColor = System.Drawing.Color.DeepSkyBlue;
             this.startingDirectoryButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.startingDirectoryButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.startingDirectoryButton.Location = new System.Drawing.Point(26, 122);
+            this.startingDirectoryButton.FlatAppearance.BorderSize = 0;
+            this.startingDirectoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.startingDirectoryButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.startingDirectoryButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.startingDirectoryButton.Location = new System.Drawing.Point(28, 176);
             this.startingDirectoryButton.Name = "startingDirectoryButton";
             this.startingDirectoryButton.Size = new System.Drawing.Size(110, 25);
             this.startingDirectoryButton.TabIndex = 4;
             this.startingDirectoryButton.Text = "Choose Folder";
-            this.startingDirectoryButton.UseVisualStyleBackColor = true;
+            this.startingDirectoryButton.UseVisualStyleBackColor = false;
             this.startingDirectoryButton.Click += new System.EventHandler(this.startingDirectoryButton_Click);
             // 
             // startingDirectory
             // 
             this.startingDirectory.AutoSize = true;
             this.startingDirectory.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.startingDirectory.Location = new System.Drawing.Point(142, 128);
+            this.startingDirectory.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.startingDirectory.Location = new System.Drawing.Point(27, 207);
             this.startingDirectory.Name = "startingDirectory";
             this.startingDirectory.Size = new System.Drawing.Size(91, 15);
             this.startingDirectory.TabIndex = 5;
@@ -107,7 +112,7 @@
             // 
             this.inputFileLabel.AutoSize = true;
             this.inputFileLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.inputFileLabel.Location = new System.Drawing.Point(22, 159);
+            this.inputFileLabel.Location = new System.Drawing.Point(24, 235);
             this.inputFileLabel.Name = "inputFileLabel";
             this.inputFileLabel.Size = new System.Drawing.Size(121, 20);
             this.inputFileLabel.TabIndex = 6;
@@ -116,7 +121,7 @@
             // inputFileTextField
             // 
             this.inputFileTextField.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.inputFileTextField.Location = new System.Drawing.Point(26, 182);
+            this.inputFileTextField.Location = new System.Drawing.Point(28, 259);
             this.inputFileTextField.Name = "inputFileTextField";
             this.inputFileTextField.Size = new System.Drawing.Size(253, 23);
             this.inputFileTextField.TabIndex = 7;
@@ -128,7 +133,7 @@
             // 
             this.findingMethodLabel.AutoSize = true;
             this.findingMethodLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.findingMethodLabel.Location = new System.Drawing.Point(22, 219);
+            this.findingMethodLabel.Location = new System.Drawing.Point(24, 308);
             this.findingMethodLabel.Name = "findingMethodLabel";
             this.findingMethodLabel.Size = new System.Drawing.Size(179, 20);
             this.findingMethodLabel.TabIndex = 8;
@@ -138,7 +143,7 @@
             // 
             this.radioButtonBFS.AutoSize = true;
             this.radioButtonBFS.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.radioButtonBFS.Location = new System.Drawing.Point(26, 245);
+            this.radioButtonBFS.Location = new System.Drawing.Point(28, 334);
             this.radioButtonBFS.Name = "radioButtonBFS";
             this.radioButtonBFS.Size = new System.Drawing.Size(59, 24);
             this.radioButtonBFS.TabIndex = 9;
@@ -150,7 +155,7 @@
             // 
             this.radioButtonDFS.AutoSize = true;
             this.radioButtonDFS.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.radioButtonDFS.Location = new System.Drawing.Point(26, 272);
+            this.radioButtonDFS.Location = new System.Drawing.Point(28, 361);
             this.radioButtonDFS.Name = "radioButtonDFS";
             this.radioButtonDFS.Size = new System.Drawing.Size(60, 24);
             this.radioButtonDFS.TabIndex = 10;
@@ -160,43 +165,114 @@
             // 
             // searchButton
             // 
+            this.searchButton.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.searchButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.searchButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Highlight;
+            this.searchButton.FlatAppearance.BorderSize = 0;
+            this.searchButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.searchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
-            this.searchButton.Location = new System.Drawing.Point(26, 314);
+            this.searchButton.Location = new System.Drawing.Point(41, 402);
             this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(110, 32);
+            this.searchButton.Size = new System.Drawing.Size(230, 45);
             this.searchButton.TabIndex = 12;
             this.searchButton.Text = "Search";
-            this.searchButton.UseVisualStyleBackColor = true;
+            this.searchButton.UseVisualStyleBackColor = false;
             this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
+            // 
+            // InputPanel
+            // 
+            this.InputPanel.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.InputPanel.Controls.Add(this.label2);
+            this.InputPanel.Controls.Add(this.logoPanel);
+            this.InputPanel.Controls.Add(this.inputLabel);
+            this.InputPanel.Controls.Add(this.searchButton);
+            this.InputPanel.Controls.Add(this.startingDirectoryLabel);
+            this.InputPanel.Controls.Add(this.radioButtonDFS);
+            this.InputPanel.Controls.Add(this.startingDirectoryButton);
+            this.InputPanel.Controls.Add(this.radioButtonBFS);
+            this.InputPanel.Controls.Add(this.startingDirectory);
+            this.InputPanel.Controls.Add(this.findingMethodLabel);
+            this.InputPanel.Controls.Add(this.inputFileLabel);
+            this.InputPanel.Controls.Add(this.inputFileTextField);
+            this.InputPanel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.InputPanel.Location = new System.Drawing.Point(0, 0);
+            this.InputPanel.Name = "InputPanel";
+            this.InputPanel.Size = new System.Drawing.Size(316, 609);
+            this.InputPanel.TabIndex = 13;
+            // 
+            // label2
+            // 
+            this.label2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
+            this.label2.Location = new System.Drawing.Point(0, 467);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(316, 142);
+            this.label2.TabIndex = 15;
+            this.label2.Text = "Developed By\r\n\r\n13520058 - Kristo Abdi Wiguna\r\n13520076 - Claudia\r\n13520080 - Jas" +
+    "on Kanggara";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // logoPanel
+            // 
+            this.logoPanel.BackColor = System.Drawing.Color.MidnightBlue;
+            this.logoPanel.Controls.Add(this.label1);
+            this.logoPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.logoPanel.Location = new System.Drawing.Point(0, 0);
+            this.logoPanel.Name = "logoPanel";
+            this.logoPanel.Size = new System.Drawing.Size(316, 85);
+            this.logoPanel.TabIndex = 14;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F);
+            this.label1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label1.Location = new System.Drawing.Point(17, 25);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(284, 31);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "MencariNafasPertama\r\n";
+            // 
+            // panelTitle
+            // 
+            this.panelTitle.Controls.Add(this.Line);
+            this.panelTitle.Controls.Add(this.Title);
+            this.panelTitle.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelTitle.Location = new System.Drawing.Point(316, 0);
+            this.panelTitle.Name = "panelTitle";
+            this.panelTitle.Size = new System.Drawing.Size(586, 85);
+            this.panelTitle.TabIndex = 14;
+            // 
+            // Line
+            // 
+            this.Line.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Line.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.Line.Location = new System.Drawing.Point(0, 83);
+            this.Line.Name = "Line";
+            this.Line.Size = new System.Drawing.Size(586, 2);
+            this.Line.TabIndex = 15;
             // 
             // mainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(902, 500);
-            this.Controls.Add(this.searchButton);
-            this.Controls.Add(this.radioButtonDFS);
-            this.Controls.Add(this.radioButtonBFS);
-            this.Controls.Add(this.findingMethodLabel);
-            this.Controls.Add(this.inputFileTextField);
-            this.Controls.Add(this.inputFileLabel);
-            this.Controls.Add(this.startingDirectory);
-            this.Controls.Add(this.startingDirectoryButton);
-            this.Controls.Add(this.startingDirectoryLabel);
-            this.Controls.Add(this.inputLabel);
-            this.Controls.Add(this.Line);
-            this.Controls.Add(this.Title);
+            this.ClientSize = new System.Drawing.Size(902, 609);
+            this.Controls.Add(this.panelTitle);
+            this.Controls.Add(this.InputPanel);
             this.Name = "mainWindow";
             this.Text = "Form1";
+            this.InputPanel.ResumeLayout(false);
+            this.InputPanel.PerformLayout();
+            this.logoPanel.ResumeLayout(false);
+            this.logoPanel.PerformLayout();
+            this.panelTitle.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.Label Title;
-        private System.Windows.Forms.Label Line;
         private System.Windows.Forms.Label inputLabel;
         private System.Windows.Forms.Label startingDirectoryLabel;
         private System.Windows.Forms.Button startingDirectoryButton;
@@ -207,6 +283,12 @@
         private System.Windows.Forms.RadioButton radioButtonBFS;
         private System.Windows.Forms.RadioButton radioButtonDFS;
         private System.Windows.Forms.Button searchButton;
+        private System.Windows.Forms.Panel InputPanel;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel logoPanel;
+        private System.Windows.Forms.Panel panelTitle;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label Line;
     }
 }
 
