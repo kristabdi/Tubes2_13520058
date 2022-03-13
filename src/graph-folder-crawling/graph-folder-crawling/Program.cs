@@ -19,18 +19,46 @@ namespace graph_folder_crawling
             // Application.SetCompatibleTextRenderingDefault(false);
             // Application.Run(new mainWindow());
             // Main
-            string root = @"D:\ITB\IF";
-            Console.WriteLine(root);
-            //System.IO.DriveInfo di = new System.IO.DriveInfo(root);
-            //System.IO.DirectoryInfo dirInfo = di.RootDirectory;
-            //System.IO.DirectoryInfo[] dirInfos = dirInfo.GetDirectories("*.*");
+            string root = @"D:\";
 
-            // For getting file
-            string target = "Tugas-Besar-2-IF2211-Strategi-Algoritma-2022.pdf";
+            List<string> files = new List<string> {};
+            string target = "Kelompok07SGDPolusiCahaya.txt";
+            var watch = System.Diagnostics.Stopwatch.StartNew();
             DFS(root, target);
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            Console.WriteLine(elapsedMs);
+            //foreach (var array in files)
+            //Console.WriteLine(string.Join(" ", array));
         }
-        private static void AddFiles(string root, List<string> listFilesAndDirectory)
+        private static void DFS(string root, string target)
         {
+            List<string> listFilesAndDirectory = new List<string> { };
+            AddFiles(root, ref listFilesAndDirectory);
+            if ((listFilesAndDirectory != null) && (listFilesAndDirectory.Count > 0)) // Check if list is not empty and not null
+            {
+                foreach (string filedir in listFilesAndDirectory)
+                {
+                    if (File.Exists(filedir))
+                    {
+                        // path is a file.
+                        if (filedir.Contains(target))
+                        {
+                            // path is the target
+                            Console.WriteLine(filedir);
+                        }
+                    }
+                    else if (Directory.Exists(filedir))
+                    {
+                        // path is a directory => call recursive
+                        DFS(filedir, target);
+                    }
+                }
+            }
+        }
+        private static void AddFiles(string root, ref List<string> listFilesAndDirectory)
+        {
+            // Return vertices consist of files and sub-directories from root
             try
             {
                 List<string> folder = Directory.GetDirectories(root).ToList();
@@ -39,39 +67,10 @@ namespace graph_folder_crawling
                 {
                     folder.Add(file);
                 }
+                listFilesAndDirectory = folder;
             }
             catch (UnauthorizedAccessException ex)
             {
-                   Console.Error.WriteLine(ex.Message);
-            }
-        }
-
-        private static void DFS(string root, string target)
-        {
-            List<string> listFilesAndDirectory = new List<string> { };
-            AddFiles(root, listFilesAndDirectory);
-            if ((listFilesAndDirectory != null) && (!listFilesAndDirectory.Any())) // Check if list is not empty and not null
-            {
-                Console.WriteLine("Masuk 1");
-                foreach (string filedir in listFilesAndDirectory)
-                {
-                    Console.WriteLine("Masuk 2");
-                    if (File.Exists(filedir))
-                    {
-                        Console.WriteLine("Masuk 3");
-                        // path is a file.
-                        if (filedir.Contains(target))
-                        {
-                            Console.WriteLine(filedir);
-                        }
-                    }
-                    else if (Directory.Exists(filedir))
-                    {
-                        Console.WriteLine("Masuk 4");
-                        // path is a directory
-                        DFS(filedir, target);
-                    }
-                }
             }
         }
     }
