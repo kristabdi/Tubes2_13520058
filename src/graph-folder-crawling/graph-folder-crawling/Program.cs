@@ -56,6 +56,57 @@ namespace graph_folder_crawling
                 }
             }
         }
+
+        private static void BFS(string root, string target)
+        {
+            List<string> listFilesAndDirectory = new List<string> { };
+            AddFiles(root, ref listFilesAndDirectory);
+            if ((listFilesAndDirectory != null) && (listFilesAndDirectory.Count > 0)) // Check if list is not empty and not null
+            {
+                Queue<string> toVisitQueue = new Queue<string> { };
+
+                foreach (string filedir in listFilesAndDirectory)
+                {
+                    Console.WriteLine(filedir);
+                    if (Directory.Exists(filedir))
+                    {
+                        toVisitQueue.Enqueue(filedir);
+                    } else if (File.Exists(filedir))
+                    {
+                        if (filedir.Contains(target))
+                        {
+                            Console.WriteLine("Exists File at" + filedir);
+                        }
+                    }
+
+                    Console.WriteLine("tes");
+                }
+
+                while (toVisitQueue.Count > 0)
+                {
+                    string currentDirectory = toVisitQueue.Dequeue();
+
+                    List<string> listChildFilesAndDirectory = new List<string> { };
+                    AddFiles(currentDirectory, ref listChildFilesAndDirectory);
+                    foreach (string child in listChildFilesAndDirectory)
+                    {
+                        if (Directory.Exists(child)) {
+                            toVisitQueue.Enqueue(child);
+                            Console.WriteLine(child);
+                            Console.WriteLine("tes2");
+                        } else if (File.Exists(child))
+                        {
+                            if (child.Contains(target))
+                            {
+                                Console.WriteLine("Exists File2 at" + child);
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        
         private static void AddFiles(string root, ref List<string> listFilesAndDirectory)
         {
             // Return vertices consist of files and sub-directories from root
