@@ -68,20 +68,20 @@ namespace graph_folder_crawling
                 foreach (string filedir in listFilesAndDirectory)
                 {
                     Console.WriteLine(filedir);
-                    if (Directory.Exists(filedir))
+                    if (Directory.Exists(filedir)) // if it is a folder, add to queue
                     {
                         toVisitQueue.Enqueue(filedir);
-                    } else if (File.Exists(filedir))
+                    } 
+                    else if (File.Exists(filedir)) // if there is a file
                     {
-                        if (filedir.Contains(target))
+                        if (filedir.Contains(target)) // check if it is the target file
                         {
-                            Console.WriteLine("Exists File at" + filedir);
+                            Console.WriteLine("Exists File at " + filedir);
                         }
                     }
-
-                    Console.WriteLine("tes");
                 }
 
+                // visit all vertex in queue
                 while (toVisitQueue.Count > 0)
                 {
                     string currentDirectory = toVisitQueue.Dequeue();
@@ -90,15 +90,15 @@ namespace graph_folder_crawling
                     AddFiles(currentDirectory, ref listChildFilesAndDirectory);
                     foreach (string child in listChildFilesAndDirectory)
                     {
-                        if (Directory.Exists(child)) {
-                            toVisitQueue.Enqueue(child);
-                            Console.WriteLine(child);
-                            Console.WriteLine("tes2");
-                        } else if (File.Exists(child))
+                        if (Directory.Exists(child)) // if it is a folder, add to queue
                         {
-                            if (child.Contains(target))
+                            toVisitQueue.Enqueue(child);
+                        } 
+                        else if (File.Exists(child)) // if it is a file
+                        {
+                            if (child.Contains(target)) // check if it is the target file
                             {
-                                Console.WriteLine("Exists File2 at" + child);
+                                Console.WriteLine("Exists File at " + child);
                             }
                         }
                     }
