@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,9 +20,11 @@ namespace graph_folder_crawling
         // file name tujuan
         private static string fileName;
         // Execution time
-        private static double execTime = 30.05;
+        private static float execTime;
+        // Find all occurence check;
+        private static bool findAllOccurence = false;
         // lokasi file setelah melakukan pencarian
-        private static string fileLocationResult;
+        private static List<string> fileLocationResult = new List<string> { };
 
         public mainWindow()
         {
@@ -45,21 +48,58 @@ namespace graph_folder_crawling
             {
                 fileName = "Error: No file input";
             }
-            // BFS dan DFS method
-            /*
+            // BFS and DFS method depends on choice
+            var watch = System.Diagnostics.Stopwatch.StartNew();
             if (searchMethod == "bfs")
             {
-                fileLocationResult = bfs(startDirectory, fileName);
+                BFS(startDirectory, fileName);
             } else if (searchMethod == "dfs")
             {
-                fileLocationResult = dfs(startDirectory, fileName);
+                DFS(startDirectory, fileName);
             }
-            */
+            watch.Stop();
+            float elapsedMs = watch.ElapsedMilliseconds;
+            execTime = elapsedMs / 1000;
 
             fileLocationLabel.Text = "Path File :";
 
-            // fileLocationResult nemu, startDirectory tinggal diganti sama fileLocationResult
-            fileLocationLink.Text = startDirectory;
+            if (findAllOccurence)
+            {
+                var stringBuilder = new StringBuilder();
+                var links = new List<LinkLabel.Link>();
+
+                foreach (var fileDir in fileLocationResult)
+                {
+                    if (stringBuilder.Length > 0) stringBuilder.AppendLine();
+
+                    links.Add(new LinkLabel.Link(stringBuilder.Length, fileDir.Length, fileDir));
+                    stringBuilder.Append(fileDir);
+                }
+
+                fileLocationLink.Text = stringBuilder.ToString();
+                foreach (var link in links)
+                {
+                    fileLocationLink.Links.Add(link);
+                }
+            } else
+            {
+                var stringBuilder = new StringBuilder();
+                var links = new List<LinkLabel.Link>();
+
+                var fileDir = fileLocationResult.First();
+
+                if (stringBuilder.Length > 0) stringBuilder.AppendLine();
+
+                links.Add(new LinkLabel.Link(stringBuilder.Length, fileDir.Length, fileDir));
+                stringBuilder.Append(fileDir);
+
+                fileLocationLink.Text = stringBuilder.ToString();
+                foreach (var link in links)
+                {
+                    fileLocationLink.Links.Add(link);
+                }
+            }
+
             // execTime disesuaikan dengan lama pencarian
             timeSpent.Text = "Time Spent: " + execTime + "s";
 
@@ -94,23 +134,107 @@ namespace graph_folder_crawling
         private void fileLocationLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             // fileLocationResult nemu, startDirectory tinggal diganti sama fileLocationResult
-            System.Diagnostics.Process.Start(startDirectory);
+
+            System.Diagnostics.Process.Start((string)e.Link.LinkData);
         }
 
-        // BFS Function
-        /*
-        private void bfs(string startDirectory, string fileName)
+        private static void DFS(string root, string target)
         {
-
+            List<string> listFilesAndDirectory = new List<string> { };
+            AddFiles(root, ref listFilesAndDirectory);
+            if ((listFilesAndDirectory != null) && (listFilesAndDirectory.Count > 0)) // Check if list is not empty and not null
+            {
+                foreach (string filedir in listFilesAndDirectory)
+                {
+                    if (File.Exists(filedir))
+                    {
+                        // path is a file.
+                        if (filedir.Contains(target))
+                        {
+                            // path is the target
+                            fileLocationResult.Add(filedir);
+                        }
+                    }
+                    else if (Directory.Exists(filedir))
+                    {
+                        // path is a directory => call recursive
+                        DFS(filedir, target);
+                    }
+                }
+            }
         }
-        */
 
-        // DFS Function
-        /*
-        private void dfs(string startDirectory, string fileName)
+        private static void BFS(string root, string target)
         {
+            List<string> listFilesAndDirectory = new List<string> { };
+            AddFiles(root, ref listFilesAndDirectory);
+            if ((listFilesAndDirectory != null) && (listFilesAndDirectory.Count > 0)) // Check if list is not empty and not null
+            {
+                Queue<string> toVisitQueue = new Queue<string> { };
 
+                foreach (string filedir in listFilesAndDirectory)
+                {
+                    Console.WriteLine(filedir);
+                    if (Directory.Exists(filedir)) // if it is a folder, add to queue
+                    {
+                        toVisitQueue.Enqueue(filedir);
+                    }
+                    else if (File.Exists(filedir)) // if there is a file
+                    {
+                        if (filedir.Contains(target)) // check if it is the target file
+                        {
+                            fileLocationResult.Add(filedir);
+                        }
+                    }
+                }
+
+                // visit all vertex in queue
+                while (toVisitQueue.Count > 0)
+                {
+                    string currentDirectory = toVisitQueue.Dequeue();
+
+                    List<string> listChildFilesAndDirectory = new List<string> { };
+                    AddFiles(currentDirectory, ref listChildFilesAndDirectory);
+                    foreach (string child in listChildFilesAndDirectory)
+                    {
+                        if (Directory.Exists(child)) // if it is a folder, add to queue
+                        {
+                            toVisitQueue.Enqueue(child);
+                        }
+                        else if (File.Exists(child)) // if it is a file
+                        {
+                            if (child.Contains(target)) // check if it is the target file
+                            {
+                                fileLocationResult.Add(child);
+                            }
+                        }
+                    }
+                }
+
+            }
         }
-        */
+
+        private static void AddFiles(string root, ref List<string> listFilesAndDirectory)
+        {
+            // Return vertices consist of files and sub-directories from root
+            try
+            {
+                List<string> folder = Directory.GetDirectories(root).ToList();
+                string[] filesInFolder = Directory.GetFiles(root);
+                foreach (var file in filesInFolder)
+                {
+                    folder.Add(file);
+                }
+                listFilesAndDirectory = folder;
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+            }
+        }
+
+        private void occurenceCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            findAllOccurence = !findAllOccurence;
+        }
     }
 }

@@ -49,6 +49,9 @@
     <Compile Include="Custom-controls\CustomButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Custom-controls\CustomCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Custom-controls\CustomRadioButton.cs">
       <SubType>Component</SubType>
     </Compile>

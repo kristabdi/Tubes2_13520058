@@ -36,21 +36,21 @@
             this.inputFileTextField = new System.Windows.Forms.TextBox();
             this.findingMethodLabel = new System.Windows.Forms.Label();
             this.InputPanel = new System.Windows.Forms.Panel();
-            this.radioButtonDFS = new graph_folder_crawling.Custom_controls.CustomRadioButton();
-            this.chooseFolderButton = new graph_folder_crawling.Custom_controls.CustomButton();
-            this.radioButtonBFS = new graph_folder_crawling.Custom_controls.CustomRadioButton();
-            this.searchButton = new graph_folder_crawling.Custom_controls.CustomButton();
             this.Authors = new System.Windows.Forms.Label();
             this.logoPanel = new System.Windows.Forms.Panel();
             this.GroupName = new System.Windows.Forms.Label();
             this.panelTitle = new System.Windows.Forms.Panel();
             this.Line = new System.Windows.Forms.Label();
             this.resultPanel = new System.Windows.Forms.Panel();
-            this.Line2 = new System.Windows.Forms.Label();
             this.timeSpent = new System.Windows.Forms.Label();
             this.fileLocationLink = new System.Windows.Forms.LinkLabel();
             this.fileLocationLabel = new System.Windows.Forms.Label();
             this.resultLabel = new System.Windows.Forms.Label();
+            this.occurenceCheckBox = new graph_folder_crawling.Custom_controls.CustomCheckBox();
+            this.radioButtonDFS = new graph_folder_crawling.Custom_controls.CustomRadioButton();
+            this.chooseFolderButton = new graph_folder_crawling.Custom_controls.CustomButton();
+            this.radioButtonBFS = new graph_folder_crawling.Custom_controls.CustomRadioButton();
+            this.searchButton = new graph_folder_crawling.Custom_controls.CustomButton();
             this.InputPanel.SuspendLayout();
             this.logoPanel.SuspendLayout();
             this.panelTitle.SuspendLayout();
@@ -65,7 +65,7 @@
             this.Title.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Title.Location = new System.Drawing.Point(0, 0);
             this.Title.Name = "Title";
-            this.Title.Size = new System.Drawing.Size(617, 85);
+            this.Title.Size = new System.Drawing.Size(668, 85);
             this.Title.TabIndex = 0;
             this.Title.Text = "Folder Crawler";
             this.Title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -109,7 +109,7 @@
             this.inputFileLabel.AutoSize = true;
             this.inputFileLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.inputFileLabel.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.inputFileLabel.Location = new System.Drawing.Point(24, 277);
+            this.inputFileLabel.Location = new System.Drawing.Point(24, 255);
             this.inputFileLabel.Name = "inputFileLabel";
             this.inputFileLabel.Size = new System.Drawing.Size(121, 20);
             this.inputFileLabel.TabIndex = 6;
@@ -120,7 +120,7 @@
             this.inputFileTextField.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
             this.inputFileTextField.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.inputFileTextField.ForeColor = System.Drawing.SystemColors.Window;
-            this.inputFileTextField.Location = new System.Drawing.Point(28, 302);
+            this.inputFileTextField.Location = new System.Drawing.Point(28, 280);
             this.inputFileTextField.Name = "inputFileTextField";
             this.inputFileTextField.Size = new System.Drawing.Size(253, 23);
             this.inputFileTextField.TabIndex = 7;
@@ -133,7 +133,7 @@
             this.findingMethodLabel.AutoSize = true;
             this.findingMethodLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.findingMethodLabel.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.findingMethodLabel.Location = new System.Drawing.Point(24, 340);
+            this.findingMethodLabel.Location = new System.Drawing.Point(24, 354);
             this.findingMethodLabel.Name = "findingMethodLabel";
             this.findingMethodLabel.Size = new System.Drawing.Size(179, 20);
             this.findingMethodLabel.TabIndex = 8;
@@ -142,6 +142,7 @@
             // InputPanel
             // 
             this.InputPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
+            this.InputPanel.Controls.Add(this.occurenceCheckBox);
             this.InputPanel.Controls.Add(this.radioButtonDFS);
             this.InputPanel.Controls.Add(this.chooseFolderButton);
             this.InputPanel.Controls.Add(this.radioButtonBFS);
@@ -159,84 +160,6 @@
             this.InputPanel.Name = "InputPanel";
             this.InputPanel.Size = new System.Drawing.Size(316, 634);
             this.InputPanel.TabIndex = 13;
-            // 
-            // radioButtonDFS
-            // 
-            this.radioButtonDFS.AutoSize = true;
-            this.radioButtonDFS.CheckedColor = System.Drawing.Color.DodgerBlue;
-            this.radioButtonDFS.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.radioButtonDFS.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.radioButtonDFS.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.radioButtonDFS.Location = new System.Drawing.Point(27, 398);
-            this.radioButtonDFS.MinimumSize = new System.Drawing.Size(0, 21);
-            this.radioButtonDFS.Name = "radioButtonDFS";
-            this.radioButtonDFS.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.radioButtonDFS.Size = new System.Drawing.Size(70, 24);
-            this.radioButtonDFS.TabIndex = 16;
-            this.radioButtonDFS.TabStop = true;
-            this.radioButtonDFS.Text = "DFS";
-            this.radioButtonDFS.UnCheckedColor = System.Drawing.Color.DodgerBlue;
-            this.radioButtonDFS.UseVisualStyleBackColor = true;
-            // 
-            // chooseFolderButton
-            // 
-            this.chooseFolderButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
-            this.chooseFolderButton.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
-            this.chooseFolderButton.BorderColor = System.Drawing.Color.DodgerBlue;
-            this.chooseFolderButton.BorderRadius = 10;
-            this.chooseFolderButton.BorderSize = 2;
-            this.chooseFolderButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.chooseFolderButton.FlatAppearance.BorderSize = 0;
-            this.chooseFolderButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chooseFolderButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.chooseFolderButton.ForeColor = System.Drawing.Color.Cyan;
-            this.chooseFolderButton.Location = new System.Drawing.Point(25, 174);
-            this.chooseFolderButton.Name = "chooseFolderButton";
-            this.chooseFolderButton.Size = new System.Drawing.Size(110, 28);
-            this.chooseFolderButton.TabIndex = 16;
-            this.chooseFolderButton.Text = "Choose Folder";
-            this.chooseFolderButton.TextColor = System.Drawing.Color.Cyan;
-            this.chooseFolderButton.UseVisualStyleBackColor = false;
-            this.chooseFolderButton.Click += new System.EventHandler(this.chooseFolderButton_Click);
-            // 
-            // radioButtonBFS
-            // 
-            this.radioButtonBFS.AutoSize = true;
-            this.radioButtonBFS.CheckedColor = System.Drawing.Color.DodgerBlue;
-            this.radioButtonBFS.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.radioButtonBFS.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.radioButtonBFS.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.radioButtonBFS.Location = new System.Drawing.Point(27, 370);
-            this.radioButtonBFS.MinimumSize = new System.Drawing.Size(0, 21);
-            this.radioButtonBFS.Name = "radioButtonBFS";
-            this.radioButtonBFS.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.radioButtonBFS.Size = new System.Drawing.Size(69, 24);
-            this.radioButtonBFS.TabIndex = 15;
-            this.radioButtonBFS.TabStop = true;
-            this.radioButtonBFS.Text = "BFS";
-            this.radioButtonBFS.UnCheckedColor = System.Drawing.Color.DodgerBlue;
-            this.radioButtonBFS.UseVisualStyleBackColor = true;
-            // 
-            // searchButton
-            // 
-            this.searchButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
-            this.searchButton.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
-            this.searchButton.BorderColor = System.Drawing.Color.DodgerBlue;
-            this.searchButton.BorderRadius = 14;
-            this.searchButton.BorderSize = 2;
-            this.searchButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.searchButton.FlatAppearance.BorderSize = 0;
-            this.searchButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.searchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.searchButton.ForeColor = System.Drawing.Color.Cyan;
-            this.searchButton.Location = new System.Drawing.Point(22, 444);
-            this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(263, 40);
-            this.searchButton.TabIndex = 15;
-            this.searchButton.Text = "Search";
-            this.searchButton.TextColor = System.Drawing.Color.Cyan;
-            this.searchButton.UseVisualStyleBackColor = false;
-            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             // 
             // Authors
             // 
@@ -280,7 +203,7 @@
             this.panelTitle.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTitle.Location = new System.Drawing.Point(316, 0);
             this.panelTitle.Name = "panelTitle";
-            this.panelTitle.Size = new System.Drawing.Size(617, 85);
+            this.panelTitle.Size = new System.Drawing.Size(668, 85);
             this.panelTitle.TabIndex = 14;
             // 
             // Line
@@ -289,12 +212,13 @@
             this.Line.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.Line.Location = new System.Drawing.Point(0, 83);
             this.Line.Name = "Line";
-            this.Line.Size = new System.Drawing.Size(617, 2);
+            this.Line.Size = new System.Drawing.Size(668, 2);
             this.Line.TabIndex = 15;
             // 
             // resultPanel
             // 
-            this.resultPanel.Controls.Add(this.Line2);
+            this.resultPanel.AutoScroll = true;
+            this.resultPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(39)))), ((int)(((byte)(58)))));
             this.resultPanel.Controls.Add(this.timeSpent);
             this.resultPanel.Controls.Add(this.fileLocationLink);
             this.resultPanel.Controls.Add(this.fileLocationLabel);
@@ -302,32 +226,26 @@
             this.resultPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.resultPanel.Location = new System.Drawing.Point(316, 437);
             this.resultPanel.Name = "resultPanel";
-            this.resultPanel.Size = new System.Drawing.Size(617, 197);
+            this.resultPanel.Size = new System.Drawing.Size(668, 197);
             this.resultPanel.TabIndex = 15;
-            // 
-            // Line2
-            // 
-            this.Line2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Line2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.Line2.Location = new System.Drawing.Point(0, 0);
-            this.Line2.Name = "Line2";
-            this.Line2.Size = new System.Drawing.Size(617, 2);
-            this.Line2.TabIndex = 16;
             // 
             // timeSpent
             // 
             this.timeSpent.AutoSize = true;
-            this.timeSpent.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.timeSpent.Location = new System.Drawing.Point(10, 155);
+            this.timeSpent.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
+            this.timeSpent.ForeColor = System.Drawing.SystemColors.Window;
+            this.timeSpent.Location = new System.Drawing.Point(430, 9);
             this.timeSpent.Name = "timeSpent";
-            this.timeSpent.Size = new System.Drawing.Size(0, 17);
+            this.timeSpent.Size = new System.Drawing.Size(0, 24);
             this.timeSpent.TabIndex = 3;
             // 
             // fileLocationLink
             // 
             this.fileLocationLink.AutoSize = true;
             this.fileLocationLink.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.fileLocationLink.Location = new System.Drawing.Point(10, 57);
+            this.fileLocationLink.ForeColor = System.Drawing.SystemColors.Window;
+            this.fileLocationLink.LinkColor = System.Drawing.Color.Cyan;
+            this.fileLocationLink.Location = new System.Drawing.Point(10, 63);
             this.fileLocationLink.Name = "fileLocationLink";
             this.fileLocationLink.Size = new System.Drawing.Size(0, 17);
             this.fileLocationLink.TabIndex = 2;
@@ -337,7 +255,8 @@
             // 
             this.fileLocationLabel.AutoSize = true;
             this.fileLocationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.fileLocationLabel.Location = new System.Drawing.Point(10, 37);
+            this.fileLocationLabel.ForeColor = System.Drawing.SystemColors.Window;
+            this.fileLocationLabel.Location = new System.Drawing.Point(10, 43);
             this.fileLocationLabel.Name = "fileLocationLabel";
             this.fileLocationLabel.Size = new System.Drawing.Size(0, 17);
             this.fileLocationLabel.TabIndex = 1;
@@ -346,17 +265,113 @@
             // 
             this.resultLabel.AutoSize = true;
             this.resultLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
+            this.resultLabel.ForeColor = System.Drawing.SystemColors.Window;
             this.resultLabel.Location = new System.Drawing.Point(9, 9);
             this.resultLabel.Name = "resultLabel";
             this.resultLabel.Size = new System.Drawing.Size(62, 24);
             this.resultLabel.TabIndex = 0;
             this.resultLabel.Text = "Result";
             // 
+            // occurenceCheckBox
+            // 
+            this.occurenceCheckBox.AutoSize = true;
+            this.occurenceCheckBox.CheckedColor = System.Drawing.Color.DodgerBlue;
+            this.occurenceCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.occurenceCheckBox.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.occurenceCheckBox.Location = new System.Drawing.Point(28, 317);
+            this.occurenceCheckBox.MinimumSize = new System.Drawing.Size(0, 21);
+            this.occurenceCheckBox.Name = "occurenceCheckBox";
+            this.occurenceCheckBox.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.occurenceCheckBox.Size = new System.Drawing.Size(171, 24);
+            this.occurenceCheckBox.TabIndex = 16;
+            this.occurenceCheckBox.Text = "Find All Occurence";
+            this.occurenceCheckBox.UnCheckedColor = System.Drawing.Color.DodgerBlue;
+            this.occurenceCheckBox.UseVisualStyleBackColor = true;
+            this.occurenceCheckBox.CheckedChanged += new System.EventHandler(this.occurenceCheckBox_CheckedChanged);
+            // 
+            // radioButtonDFS
+            // 
+            this.radioButtonDFS.AutoSize = true;
+            this.radioButtonDFS.CheckedColor = System.Drawing.Color.DodgerBlue;
+            this.radioButtonDFS.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.radioButtonDFS.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.radioButtonDFS.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.radioButtonDFS.Location = new System.Drawing.Point(27, 412);
+            this.radioButtonDFS.MinimumSize = new System.Drawing.Size(0, 21);
+            this.radioButtonDFS.Name = "radioButtonDFS";
+            this.radioButtonDFS.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.radioButtonDFS.Size = new System.Drawing.Size(70, 24);
+            this.radioButtonDFS.TabIndex = 16;
+            this.radioButtonDFS.TabStop = true;
+            this.radioButtonDFS.Text = "DFS";
+            this.radioButtonDFS.UnCheckedColor = System.Drawing.Color.DodgerBlue;
+            this.radioButtonDFS.UseVisualStyleBackColor = true;
+            // 
+            // chooseFolderButton
+            // 
+            this.chooseFolderButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
+            this.chooseFolderButton.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
+            this.chooseFolderButton.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.chooseFolderButton.BorderRadius = 10;
+            this.chooseFolderButton.BorderSize = 2;
+            this.chooseFolderButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.chooseFolderButton.FlatAppearance.BorderSize = 0;
+            this.chooseFolderButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chooseFolderButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.chooseFolderButton.ForeColor = System.Drawing.Color.Cyan;
+            this.chooseFolderButton.Location = new System.Drawing.Point(25, 174);
+            this.chooseFolderButton.Name = "chooseFolderButton";
+            this.chooseFolderButton.Size = new System.Drawing.Size(110, 28);
+            this.chooseFolderButton.TabIndex = 16;
+            this.chooseFolderButton.Text = "Choose Folder";
+            this.chooseFolderButton.TextColor = System.Drawing.Color.Cyan;
+            this.chooseFolderButton.UseVisualStyleBackColor = false;
+            this.chooseFolderButton.Click += new System.EventHandler(this.chooseFolderButton_Click);
+            // 
+            // radioButtonBFS
+            // 
+            this.radioButtonBFS.AutoSize = true;
+            this.radioButtonBFS.CheckedColor = System.Drawing.Color.DodgerBlue;
+            this.radioButtonBFS.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.radioButtonBFS.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.radioButtonBFS.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.radioButtonBFS.Location = new System.Drawing.Point(27, 384);
+            this.radioButtonBFS.MinimumSize = new System.Drawing.Size(0, 21);
+            this.radioButtonBFS.Name = "radioButtonBFS";
+            this.radioButtonBFS.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.radioButtonBFS.Size = new System.Drawing.Size(69, 24);
+            this.radioButtonBFS.TabIndex = 15;
+            this.radioButtonBFS.TabStop = true;
+            this.radioButtonBFS.Text = "BFS";
+            this.radioButtonBFS.UnCheckedColor = System.Drawing.Color.DodgerBlue;
+            this.radioButtonBFS.UseVisualStyleBackColor = true;
+            // 
+            // searchButton
+            // 
+            this.searchButton.BackColor = System.Drawing.Color.DodgerBlue;
+            this.searchButton.BackgroundColor = System.Drawing.Color.DodgerBlue;
+            this.searchButton.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.searchButton.BorderRadius = 14;
+            this.searchButton.BorderSize = 2;
+            this.searchButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.searchButton.FlatAppearance.BorderSize = 0;
+            this.searchButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.searchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
+            this.searchButton.ForeColor = System.Drawing.SystemColors.Window;
+            this.searchButton.Location = new System.Drawing.Point(22, 453);
+            this.searchButton.Name = "searchButton";
+            this.searchButton.Size = new System.Drawing.Size(263, 40);
+            this.searchButton.TabIndex = 15;
+            this.searchButton.Text = "Search";
+            this.searchButton.TextColor = System.Drawing.SystemColors.Window;
+            this.searchButton.UseVisualStyleBackColor = false;
+            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
+            // 
             // mainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(933, 634);
+            this.ClientSize = new System.Drawing.Size(984, 634);
             this.Controls.Add(this.resultPanel);
             this.Controls.Add(this.panelTitle);
             this.Controls.Add(this.InputPanel);
@@ -393,11 +408,11 @@
         private Custom_controls.CustomRadioButton radioButtonDFS;
         private Custom_controls.CustomRadioButton radioButtonBFS;
         private System.Windows.Forms.Panel resultPanel;
-        private System.Windows.Forms.Label Line2;
         private System.Windows.Forms.Label timeSpent;
         private System.Windows.Forms.LinkLabel fileLocationLink;
         private System.Windows.Forms.Label fileLocationLabel;
         private System.Windows.Forms.Label resultLabel;
+        private Custom_controls.CustomCheckBox occurenceCheckBox;
     }
 }
 

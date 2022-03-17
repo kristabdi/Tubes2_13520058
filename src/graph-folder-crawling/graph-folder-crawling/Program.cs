@@ -15,19 +15,21 @@ namespace graph_folder_crawling
         [STAThread]
         static void Main()
         {
-            // Application.EnableVisualStyles();
-            // Application.SetCompatibleTextRenderingDefault(false);
-            // Application.Run(new mainWindow());
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new mainWindow());
             // Main
-            string root = @"D:\";
+            /*
+            string root = @"D:\kuliah";
 
             List<string> files = new List<string> {};
-            string target = "Kelompok07SGDPolusiCahaya.txt";
+            string target = "latihansql1.txt";
             var watch = System.Diagnostics.Stopwatch.StartNew();
             DFS(root, target);
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;
             Console.WriteLine(elapsedMs);
+            */
             //foreach (var array in files)
             //Console.WriteLine(string.Join(" ", array));
         }
