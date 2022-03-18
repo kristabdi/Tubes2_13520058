@@ -61,48 +61,67 @@ namespace graph_folder_crawling
             float elapsedMs = watch.ElapsedMilliseconds;
             execTime = elapsedMs / 1000;
 
-            fileLocationLabel.Text = "Path File :";
-
-            if (findAllOccurence)
+            if (fileLocationResult.Count == 0)
             {
-                var stringBuilder = new StringBuilder();
-                var links = new List<LinkLabel.Link>();
-
-                foreach (var fileDir in fileLocationResult)
+                MessageBox.Show("File not found");
+            } else
+            {
+                // Menampilkan Graph
+                if (searchMethod == "bfs")
                 {
+                    // Graph for BFS
+                }
+                else if (searchMethod == "dfs")
+                {
+                    // Graph for DFS
+                }
+
+
+                fileLocationLabel.Text = "Path File :";
+
+                if (findAllOccurence)
+                {
+                    var stringBuilder = new StringBuilder();
+                    var links = new List<LinkLabel.Link>();
+
+                    foreach (var fileDir in fileLocationResult)
+                    {
+                        if (stringBuilder.Length > 0) stringBuilder.AppendLine();
+
+                        links.Add(new LinkLabel.Link(stringBuilder.Length, fileDir.Length, fileDir));
+                        stringBuilder.Append(fileDir);
+                    }
+
+                    fileLocationLink.Text = stringBuilder.ToString();
+                    foreach (var link in links)
+                    {
+                        fileLocationLink.Links.Add(link);
+                    }
+                }
+                else
+                {
+                    var stringBuilder = new StringBuilder();
+                    var links = new List<LinkLabel.Link>();
+
+                    var fileDir = fileLocationResult.First();
+
                     if (stringBuilder.Length > 0) stringBuilder.AppendLine();
 
                     links.Add(new LinkLabel.Link(stringBuilder.Length, fileDir.Length, fileDir));
                     stringBuilder.Append(fileDir);
+
+                    fileLocationLink.Text = stringBuilder.ToString();
+                    foreach (var link in links)
+                    {
+                        fileLocationLink.Links.Add(link);
+                    }
                 }
 
-                fileLocationLink.Text = stringBuilder.ToString();
-                foreach (var link in links)
-                {
-                    fileLocationLink.Links.Add(link);
-                }
-            } else
-            {
-                var stringBuilder = new StringBuilder();
-                var links = new List<LinkLabel.Link>();
+                // execTime disesuaikan dengan lama pencarian
+                timeSpent.Text = "Time Spent: " + execTime + "s";
 
-                var fileDir = fileLocationResult.First();
-
-                if (stringBuilder.Length > 0) stringBuilder.AppendLine();
-
-                links.Add(new LinkLabel.Link(stringBuilder.Length, fileDir.Length, fileDir));
-                stringBuilder.Append(fileDir);
-
-                fileLocationLink.Text = stringBuilder.ToString();
-                foreach (var link in links)
-                {
-                    fileLocationLink.Links.Add(link);
-                }
+                clearButton.Enabled = true;
             }
-
-            // execTime disesuaikan dengan lama pencarian
-            timeSpent.Text = "Time Spent: " + execTime + "s";
-
         }
 
         private void inputFileTextField_Enter(object sender, EventArgs e)
@@ -153,6 +172,12 @@ namespace graph_folder_crawling
                         {
                             // path is the target
                             fileLocationResult.Add(filedir);
+                            // if find all occurence false
+                            // break the loop
+                            if (!findAllOccurence)
+                            {
+                                break;
+                            }
                         }
                     }
                     else if (Directory.Exists(filedir))
@@ -184,6 +209,12 @@ namespace graph_folder_crawling
                         if (filedir.Contains(target)) // check if it is the target file
                         {
                             fileLocationResult.Add(filedir);
+                            // if find all occurence false
+                            // break the loop
+                            if (!findAllOccurence)
+                            {
+                                break;
+                            }
                         }
                     }
                 }
@@ -206,6 +237,12 @@ namespace graph_folder_crawling
                             if (child.Contains(target)) // check if it is the target file
                             {
                                 fileLocationResult.Add(child);
+                                // if find all occurence false
+                                // break the loop
+                                if (!findAllOccurence)
+                                {
+                                    break;
+                                }
                             }
                         }
                     }
@@ -235,6 +272,16 @@ namespace graph_folder_crawling
         private void occurenceCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             findAllOccurence = !findAllOccurence;
+        }
+
+        private void clearButton_Click(object sender, EventArgs e)
+        {
+            fileLocationResult.Clear();
+            fileLocationLink.Links.Clear();
+            fileLocationLink.Text = "";
+            fileLocationLabel.Text = "";
+            timeSpent.Text = "";
+            clearButton.Enabled = false;
         }
     }
 }
