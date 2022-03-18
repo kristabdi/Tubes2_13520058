@@ -52,6 +52,7 @@ namespace graph_folder_crawling
             {
                 foreach (string filedir in listFilesAndDirectory)
                 {
+                    adjacencyList.Add(new List<string> { new DirectoryInfo(root).Name, new DirectoryInfo(filedir).Name });
                     if (File.Exists(filedir))
                     {
                         // path is a file.
@@ -129,15 +130,9 @@ namespace graph_folder_crawling
             {
                 List<string> folder = Directory.GetDirectories(root).ToList();
                 string[] filesInFolder = Directory.GetFiles(root);
-                string[] foldersInFolder = Directory.GetDirectories(root);
-                foreach (var subFolder in foldersInFolder)
-                {
-                    adjacencyList.Add(new List<string> { new DirectoryInfo(root).Name, new DirectoryInfo(subFolder).Name });
-                }
                 foreach (var file in filesInFolder)
                 {
                     folder.Add(file);
-                    adjacencyList.Add(new List<string> { new DirectoryInfo(root).Name, Path.GetFileName(file) });
                 }
                 listFilesAndDirectory = folder;
             }

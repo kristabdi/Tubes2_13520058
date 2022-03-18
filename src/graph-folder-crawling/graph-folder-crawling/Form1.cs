@@ -61,7 +61,7 @@ namespace graph_folder_crawling
                 BFS(startDirectory, fileName);
             } else if (searchMethod == "dfs")
             {
-                DFS(startDirectory, fileName);
+                DFS(startDirectory, fileName, findAllOccurence);
             }
             watch.Stop();
             float elapsedMs = watch.ElapsedMilliseconds;
@@ -185,7 +185,7 @@ namespace graph_folder_crawling
             System.Diagnostics.Process.Start((string)e.Link.LinkData);
         }
 
-        private static void DFS(string root, string target)
+        private static void DFS(string root, string target, bool findAll)
         {
             List<string> listFilesAndDirectory = new List<string> { };
             AddFiles(root, ref listFilesAndDirectory);
@@ -193,6 +193,7 @@ namespace graph_folder_crawling
             {
                 foreach (string filedir in listFilesAndDirectory)
                 {
+                    adjacencyList.Add(new List<string> { new DirectoryInfo(root).Name, new DirectoryInfo(filedir).Name });
                     if (File.Exists(filedir))
                     {
                         // path is a file.
@@ -200,18 +201,14 @@ namespace graph_folder_crawling
                         {
                             // path is the target
                             fileLocationResult.Add(filedir);
-                            // if find all occurence false
-                            // break the loop
-                            if (!findAllOccurence)
-                            {
-                                break;
-                            }
+
                         }
                     }
                     else if (Directory.Exists(filedir))
                     {
                         // path is a directory => call recursive
-                        DFS(filedir, target);
+                        DFS(filedir, target, findAll);
+                        if (findAll == false) return;
                     }
                 }
             }
@@ -241,7 +238,7 @@ namespace graph_folder_crawling
                             // break the loop
                             if (!findAllOccurence)
                             {
-                                break;
+                                return;
                             }
                         }
                     }
@@ -269,7 +266,7 @@ namespace graph_folder_crawling
                                 // break the loop
                                 if (!findAllOccurence)
                                 {
-                                    break;
+                                    return;
                                 }
                             }
                         }
@@ -286,15 +283,9 @@ namespace graph_folder_crawling
             {
                 List<string> folder = Directory.GetDirectories(root).ToList();
                 string[] filesInFolder = Directory.GetFiles(root);
-                string[] foldersInFolder = Directory.GetDirectories(root);
-                foreach (var subFolder in foldersInFolder)
-                {
-                    adjacencyList.Add(new List<string> { new DirectoryInfo(root).Name, new DirectoryInfo(subFolder).Name });
-                }
                 foreach (var file in filesInFolder)
                 {
                     folder.Add(file);
-                    adjacencyList.Add(new List<string> { new DirectoryInfo(root).Name, Path.GetFileName(file) });
                 }
                 listFilesAndDirectory = folder;
             }
