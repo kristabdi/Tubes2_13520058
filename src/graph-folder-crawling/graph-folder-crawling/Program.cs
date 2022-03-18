@@ -10,6 +10,7 @@ namespace graph_folder_crawling
     internal static class Program
     {
         private static List<List<string>> adjacencyList = new List<List<string>>();
+        private static List<List<string>> locationList = new List<List<string>>();
         private static bool found = false;
         /// <summary>
         /// The main entry point for the application.
@@ -22,16 +23,17 @@ namespace graph_folder_crawling
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new mainWindow());
             
+
             // Main
             
             /*
-            string root = @"D:\kuliah\sem4\basdat";
+            string root = @"D:\coba";
 
             List<string> files = new List<string> {};
-            string target = "prak1.sql";
+            string target = "halo.txt";
             var watch = System.Diagnostics.Stopwatch.StartNew();
             bool findAll = false; // being input
-            BFS(root, target, findAll);
+            DFS(root, target, findAll);
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;
             Console.WriteLine(elapsedMs);
@@ -40,8 +42,39 @@ namespace graph_folder_crawling
             {
                 Console.WriteLine(connection[0] + " " + connection[1]);
             }
-            */
 
+            Console.WriteLine();
+
+            for (int i = adjacencyList.Count - 1; i >= 0; i--)
+            {
+                if (locationList.Count == 0)
+                {
+                    if (adjacencyList[i][1] == target)
+                    {
+                        locationList.Add(new List<string> { adjacencyList[i][0], adjacencyList[i][1] });
+                        adjacencyList.RemoveAt(i);
+
+                    }
+                } else
+                {
+                    if (locationList.Last()[0] == adjacencyList[i][1])
+                    {
+                        locationList.Add(new List<string> { adjacencyList[i][0], adjacencyList[i][1] });
+                        adjacencyList.RemoveAt(i);
+                    }
+                }
+
+            }
+
+            locationList.Reverse();
+
+            foreach(List<string> location in locationList)
+            {
+                Console.WriteLine(location[0] + " " + location[1]);
+            }
+
+            Console.WriteLine(adjacencyList.Count);
+            */
             //foreach (var array in files)
             //Console.WriteLine(string.Join(" ", array));
         }
