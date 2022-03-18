@@ -76,6 +76,17 @@ namespace graph_folder_crawling
                 if (searchMethod == "bfs")
                 {
                     // Graph for BFS
+                    graph = new Microsoft.Msagl.Drawing.Graph("graph");
+                    //create the graph content 
+                    foreach (List<string> connection in adjacencyList)
+                    {
+                        graph.AddEdge(connection[0], connection[1]);
+                    }
+                    //bind the graph to the viewer 
+                    viewer.Graph = graph;
+                    //associate the viewer with the form 
+                    viewer.Dock = System.Windows.Forms.DockStyle.Fill;
+                    graphPanel.Controls.Add(viewer);
                 }
                 else if (searchMethod == "dfs")
                 {
