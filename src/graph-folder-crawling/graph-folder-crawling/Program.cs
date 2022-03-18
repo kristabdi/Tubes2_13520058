@@ -16,30 +16,35 @@ namespace graph_folder_crawling
         [STAThread]
         static void Main()
         {
+            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new mainWindow());
+            
             // Main
             /*
-            string root = @"D:\kuliah\sem4\basdat";
+            string root = @"D:\test\";
 
             List<string> files = new List<string> {};
-            string target = "latihansql1.txt";
+            string target = "a.txt";
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            DFS(root, target);
+            bool findAll = true; // being input
+            DFS(root, target, findAll);
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;
             Console.WriteLine(elapsedMs);
+            
             foreach (List<string> connection in adjacencyList)
             {
                 Console.WriteLine(connection[0] + " " + connection[1]);
             }
             */
+
             //foreach (var array in files)
             //Console.WriteLine(string.Join(" ", array));
         }
 
-        private static void DFS(string root, string target)
+        private static void DFS(string root, string target, bool findAll)
         {
             List<string> listFilesAndDirectory = new List<string> { };
             AddFiles(root, ref listFilesAndDirectory);
@@ -53,13 +58,15 @@ namespace graph_folder_crawling
                         if (filedir.Contains(target))
                         {
                             // path is the target
-                            Console.WriteLine(filedir);
+                            Console.WriteLine("Exists File at " + filedir);
+                            
                         }
                     }
                     else if (Directory.Exists(filedir))
                     {
                         // path is a directory => call recursive
-                        DFS(filedir, target);
+                        DFS(filedir, target, findAll);
+                        if (findAll == false) return;
                     }
                 }
             }
