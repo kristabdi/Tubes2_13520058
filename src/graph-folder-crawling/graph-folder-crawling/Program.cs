@@ -10,6 +10,7 @@ namespace graph_folder_crawling
     internal static class Program
     {
         private static List<List<string>> adjacencyList = new List<List<string>>();
+        private static bool found = false;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -22,14 +23,15 @@ namespace graph_folder_crawling
             Application.Run(new mainWindow());
             
             // Main
+            
             /*
-            string root = @"D:\test\";
+            string root = @"D:\kuliah\sem4\basdat";
 
             List<string> files = new List<string> {};
-            string target = "a.txt";
+            string target = "prak1.sql";
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            bool findAll = true; // being input
-            DFS(root, target, findAll);
+            bool findAll = false; // being input
+            BFS(root, target, findAll);
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;
             Console.WriteLine(elapsedMs);
@@ -60,20 +62,23 @@ namespace graph_folder_crawling
                         {
                             // path is the target
                             Console.WriteLine("Exists File at " + filedir);
-                            
+                            found = true;
                         }
                     }
                     else if (Directory.Exists(filedir))
                     {
                         // path is a directory => call recursive
                         DFS(filedir, target, findAll);
-                        if (findAll == false) return;
+                        if (!findAll && found)
+                        {
+                            return;
+                        }
                     }
                 }
             }
         }
 
-        private static void BFS(string root, string target)
+        private static void BFS(string root, string target, bool findAll)
         {
             List<string> listFilesAndDirectory = new List<string> { };
             AddFiles(root, ref listFilesAndDirectory);
@@ -83,7 +88,7 @@ namespace graph_folder_crawling
 
                 foreach (string filedir in listFilesAndDirectory)
                 {
-                    Console.WriteLine(filedir);
+                    adjacencyList.Add(new List<string> { new DirectoryInfo(root).Name, new DirectoryInfo(filedir).Name });
                     if (Directory.Exists(filedir)) // if it is a folder, add to queue
                     {
                         toVisitQueue.Enqueue(filedir);
@@ -93,6 +98,7 @@ namespace graph_folder_crawling
                         if (filedir.Contains(target)) // check if it is the target file
                         {
                             Console.WriteLine("Exists File at " + filedir);
+                            if (!findAll) return;
                         }
                     }
                 }
@@ -106,6 +112,7 @@ namespace graph_folder_crawling
                     AddFiles(currentDirectory, ref listChildFilesAndDirectory);
                     foreach (string child in listChildFilesAndDirectory)
                     {
+                        adjacencyList.Add(new List<string> { new DirectoryInfo(currentDirectory).Name, new DirectoryInfo(child).Name });
                         if (Directory.Exists(child)) // if it is a folder, add to queue
                         {
                             toVisitQueue.Enqueue(child);
@@ -115,6 +122,7 @@ namespace graph_folder_crawling
                             if (child.Contains(target)) // check if it is the target file
                             {
                                 Console.WriteLine("Exists File at " + child);
+                                if (!findAll) return;
                             }
                         }
                     }

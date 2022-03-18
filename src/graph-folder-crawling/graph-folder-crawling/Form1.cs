@@ -31,6 +31,9 @@ namespace graph_folder_crawling
         private static Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
         //create a graph object 
         private static Microsoft.Msagl.Drawing.Graph graph;
+        // check if file found for find all occurence false, then stop
+        private static bool found = false;
+
 
         public mainWindow()
         {
@@ -58,7 +61,7 @@ namespace graph_folder_crawling
             var watch = System.Diagnostics.Stopwatch.StartNew();
             if (searchMethod == "bfs")
             {
-                BFS(startDirectory, fileName);
+                BFS(startDirectory, fileName, findAllOccurence);
             } else if (searchMethod == "dfs")
             {
                 DFS(startDirectory, fileName, findAllOccurence);
@@ -201,20 +204,20 @@ namespace graph_folder_crawling
                         {
                             // path is the target
                             fileLocationResult.Add(filedir);
-
+                            found = true;
                         }
                     }
                     else if (Directory.Exists(filedir))
                     {
                         // path is a directory => call recursive
                         DFS(filedir, target, findAll);
-                        if (findAll == false) return;
+                        if (!findAll && found) return;
                     }
                 }
             }
         }
 
-        private static void BFS(string root, string target)
+        private static void BFS(string root, string target, bool findAll)
         {
             List<string> listFilesAndDirectory = new List<string> { };
             AddFiles(root, ref listFilesAndDirectory);
@@ -224,7 +227,7 @@ namespace graph_folder_crawling
 
                 foreach (string filedir in listFilesAndDirectory)
                 {
-                    Console.WriteLine(filedir);
+                    adjacencyList.Add(new List<string> { new DirectoryInfo(root).Name, new DirectoryInfo(filedir).Name });
                     if (Directory.Exists(filedir)) // if it is a folder, add to queue
                     {
                         toVisitQueue.Enqueue(filedir);
@@ -236,10 +239,7 @@ namespace graph_folder_crawling
                             fileLocationResult.Add(filedir);
                             // if find all occurence false
                             // break the loop
-                            if (!findAllOccurence)
-                            {
-                                return;
-                            }
+                            if (!findAll) return;
                         }
                     }
                 }
@@ -253,6 +253,7 @@ namespace graph_folder_crawling
                     AddFiles(currentDirectory, ref listChildFilesAndDirectory);
                     foreach (string child in listChildFilesAndDirectory)
                     {
+                        adjacencyList.Add(new List<string> { new DirectoryInfo(currentDirectory).Name, new DirectoryInfo(child).Name });
                         if (Directory.Exists(child)) // if it is a folder, add to queue
                         {
                             toVisitQueue.Enqueue(child);
@@ -264,10 +265,7 @@ namespace graph_folder_crawling
                                 fileLocationResult.Add(child);
                                 // if find all occurence false
                                 // break the loop
-                                if (!findAllOccurence)
-                                {
-                                    return;
-                                }
+                                if (!findAll) return;
                             }
                         }
                     }
