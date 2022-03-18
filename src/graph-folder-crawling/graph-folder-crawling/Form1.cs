@@ -76,7 +76,17 @@ namespace graph_folder_crawling
             float elapsedMs = watch.ElapsedMilliseconds;
             execTime = elapsedMs / 1000;
 
-            getLocationList();
+            if (fileLocationResult.Count > 0)
+            {
+                for (int i = 0; i < fileLocationResult.Count; i++)
+                {
+                    getLocationList();
+                }
+            }
+            else
+            {
+                getLocationList();
+            }
 
             if (fileLocationResult.Count == 0)
             {
@@ -104,6 +114,12 @@ namespace graph_folder_crawling
                 {
                     // Graph for DFS
                     graph = new Microsoft.Msagl.Drawing.Graph("graph");
+                    foreach (List<string> location in locationList)
+                    {
+                        graph.AddEdge(location[0], location[1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
+                        graph.FindNode(location[0]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Blue;
+                        graph.FindNode(location[1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Blue;
+                    }
                     //create the graph content 
                     if (adjacencyList.Count > 0)
                     {
@@ -114,13 +130,9 @@ namespace graph_folder_crawling
                             graph.FindNode(connection[1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
                         }
                     }
+                    // fungsi remove location kalo == connection brarti connection dihapus => cari path hasil biar kaga dobel
+                    // unvisited harus cek connection[1] kalo misal sama => connection tersebut diremove lalu dimasukkan ke unvisitedList
                     
-                    foreach (List<string> location in locationList)
-                    {
-                        graph.AddEdge(location[0], location[1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
-                        graph.FindNode(location[0]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Blue;
-                        graph.FindNode(location[1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Blue;
-                    }
                     //bind the graph to the viewer 
                     viewer.Graph = graph;
                     //associate the viewer with the form 
@@ -213,11 +225,24 @@ namespace graph_folder_crawling
         {
             List<string> listFilesAndDirectory = new List<string> { };
             AddFiles(root, ref listFilesAndDirectory);
+            foreach(string filedir in listFilesAndDirectory)
+            {
+                unvisited.Add(new DirectoryInfo(filedir).Name);
+                adjacencyList.Add(new List<string> { root, filedir });
+            }
+            
             if ((listFilesAndDirectory != null) && (listFilesAndDirectory.Count > 0)) // Check if list is not empty and not null
             {
                 foreach (string filedir in listFilesAndDirectory)
                 {
-                    adjacencyList.Add(new List<string> { root, filedir });
+                    int index = unvisited.IndexOf(new DirectoryInfo(filedir).Name);
+                    unvisited.RemoveAt(index);
+                    /*
+                    if (!findAll)
+                    {
+                        adjacencyList.Add(new List<string> { root, filedir });
+                    }
+                    */
                     if (File.Exists(filedir))
                     {
                         // path is a file.
@@ -242,6 +267,11 @@ namespace graph_folder_crawling
         {
             List<string> listFilesAndDirectory = new List<string> { };
             AddFiles(root, ref listFilesAndDirectory);
+            foreach (string filedir in listFilesAndDirectory)
+            {
+                unvisited.Add(new DirectoryInfo(filedir).Name);
+                adjacencyList.Add(new List<string> { root, filedir });
+            }
             if ((listFilesAndDirectory != null) && (listFilesAndDirectory.Count > 0)) // Check if list is not empty and not null
             {
                 Queue<string> toVisitQueue = new Queue<string> { };
@@ -320,6 +350,10 @@ namespace graph_folder_crawling
 
         private void clearButton_Click(object sender, EventArgs e)
         {
+            adjacencyList.Clear();
+            locationList.Clear();
+
+            unvisited.Clear();
             fileLocationResult.Clear();
             fileLocationLink.Links.Clear();
             // belom bisa clear graph
@@ -332,28 +366,28 @@ namespace graph_folder_crawling
 
         private void getLocationList()
         {
+
             for (int i = adjacencyList.Count - 1; i >= 0; i--)
             {
-                if (locationList.Count == 0)
+                if (Path.GetFileName(adjacencyList[i][1]) == fileName)
                 {
-                    if (Path.GetFileName(adjacencyList[i][1]) == fileName)
-                    {
-                        locationList.Add(new List<string> { adjacencyList[i][0], adjacencyList[i][1] });
-                        adjacencyList.RemoveAt(i);
-                    }
-                } else
+                    locationList.Add(new List<string> { adjacencyList[i][0], adjacencyList[i][1] });
+                    adjacencyList.RemoveAt(i);
+                    break;
+                }
+            }
+            for (int i = adjacencyList.Count - 1; i >= 0; i--)
+            {
+                if (locationList.Last()[0] == adjacencyList[i][1])
                 {
-                    if (locationList.Last()[0] == adjacencyList[i][1])
-                    {
-                        locationList.Add(new List<string> { adjacencyList[i][0], adjacencyList[i][1] });
-                        adjacencyList.RemoveAt(i);
-                    }
+                    locationList.Add(new List<string> { adjacencyList[i][0], adjacencyList[i][1] });
+                    adjacencyList.RemoveAt(i);
                 }
             }
 
             locationList.Reverse();
         }
-        
+
         private static void removeResultVisited(List<string> pathOFTarget)
         {
             foreach (string filedir in pathOFTarget)
