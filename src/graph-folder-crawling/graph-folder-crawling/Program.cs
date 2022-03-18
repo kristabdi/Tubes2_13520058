@@ -9,6 +9,7 @@ namespace graph_folder_crawling
 {
     internal static class Program
     {
+        private static List<List<string>> adjacencyList = new List<List<string>>();
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -20,7 +21,7 @@ namespace graph_folder_crawling
             Application.Run(new mainWindow());
             // Main
             /*
-            string root = @"D:\kuliah";
+            string root = @"D:\kuliah\sem4\basdat";
 
             List<string> files = new List<string> {};
             string target = "latihansql1.txt";
@@ -29,10 +30,15 @@ namespace graph_folder_crawling
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;
             Console.WriteLine(elapsedMs);
+            foreach (List<string> connection in adjacencyList)
+            {
+                Console.WriteLine(connection[0] + " " + connection[1]);
+            }
             */
             //foreach (var array in files)
             //Console.WriteLine(string.Join(" ", array));
         }
+
         private static void DFS(string root, string target)
         {
             List<string> listFilesAndDirectory = new List<string> { };
@@ -116,9 +122,15 @@ namespace graph_folder_crawling
             {
                 List<string> folder = Directory.GetDirectories(root).ToList();
                 string[] filesInFolder = Directory.GetFiles(root);
+                string[] foldersInFolder = Directory.GetDirectories(root);
+                foreach (var subFolder in foldersInFolder)
+                {
+                    adjacencyList.Add(new List<string> { new DirectoryInfo(root).Name, new DirectoryInfo(subFolder).Name });
+                }
                 foreach (var file in filesInFolder)
                 {
                     folder.Add(file);
+                    adjacencyList.Add(new List<string> { new DirectoryInfo(root).Name, Path.GetFileName(file) });
                 }
                 listFilesAndDirectory = folder;
             }

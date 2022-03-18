@@ -25,6 +25,12 @@ namespace graph_folder_crawling
         private static bool findAllOccurence = false;
         // lokasi file setelah melakukan pencarian
         private static List<string> fileLocationResult = new List<string> { };
+        // hubungan folder dengan file
+        private static List<List<string>> adjacencyList = new List<List<string>>();
+        //create a viewer object 
+        private static Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
+        //create a graph object 
+        private static Microsoft.Msagl.Drawing.Graph graph;
 
         public mainWindow()
         {
@@ -74,6 +80,17 @@ namespace graph_folder_crawling
                 else if (searchMethod == "dfs")
                 {
                     // Graph for DFS
+                    graph = new Microsoft.Msagl.Drawing.Graph("graph");
+                    //create the graph content 
+                    foreach (List<string> connection in adjacencyList)
+                    {
+                        graph.AddEdge(connection[0], connection[1]);
+                    }
+                    //bind the graph to the viewer 
+                    viewer.Graph = graph;
+                    //associate the viewer with the form 
+                    viewer.Dock = System.Windows.Forms.DockStyle.Fill;
+                    graphPanel.Controls.Add(viewer);
                 }
 
 
@@ -258,9 +275,15 @@ namespace graph_folder_crawling
             {
                 List<string> folder = Directory.GetDirectories(root).ToList();
                 string[] filesInFolder = Directory.GetFiles(root);
+                string[] foldersInFolder = Directory.GetDirectories(root);
+                foreach (var subFolder in foldersInFolder)
+                {
+                    adjacencyList.Add(new List<string> { new DirectoryInfo(root).Name, new DirectoryInfo(subFolder).Name });
+                }
                 foreach (var file in filesInFolder)
                 {
                     folder.Add(file);
+                    adjacencyList.Add(new List<string> { new DirectoryInfo(root).Name, Path.GetFileName(file) });
                 }
                 listFilesAndDirectory = folder;
             }
@@ -278,6 +301,8 @@ namespace graph_folder_crawling
         {
             fileLocationResult.Clear();
             fileLocationLink.Links.Clear();
+            // belom bisa clear graph
+            graphPanel.Controls.Clear();
             fileLocationLink.Text = "";
             fileLocationLabel.Text = "";
             timeSpent.Text = "";
