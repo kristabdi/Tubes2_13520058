@@ -38,7 +38,7 @@ namespace graph_folder_crawling
         // visited and unvisited
         private static List<string> visited = new List<string>();
         private static List<string> unvisited = new List<string>();
-
+        private static List<List<string>> unvisitedList = new List<List<string>>();
 
         public mainWindow()
         {
@@ -98,11 +98,36 @@ namespace graph_folder_crawling
                 {
                     // Graph for BFS
                     graph = new Microsoft.Msagl.Drawing.Graph("graph");
+                    getUnvisitedList();
                     //create the graph content 
-                    foreach (List<string> connection in adjacencyList)
-                    {
-                        graph.AddEdge(connection[0], connection[1]);
 
+                    foreach (List<string> location in locationList)
+                    {
+                        graph.AddEdge(location[0], location[1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
+                        graph.FindNode(location[0]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Blue;
+                        graph.FindNode(location[1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Blue;
+                    }
+
+                    if (adjacencyList.Count > 0)
+                    {
+                        foreach (List<string> connection in adjacencyList)
+                        {
+                            graph.AddEdge(connection[0], connection[1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
+                            graph.FindNode(connection[0]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
+                            graph.FindNode(connection[1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
+                        }
+                    }
+
+
+                    if (unvisitedList.Count > 0)
+                    {
+                        foreach (List<string> connection in unvisitedList)
+                        {
+                            graph.AddEdge(connection[0], connection[1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Black;
+                            if (connection[0] != startDirectory) graph.FindNode(connection[0]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.White;
+                            if (connection[1] != startDirectory) graph.FindNode(connection[1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.White;
+
+                        }
                     }
                     //bind the graph to the viewer 
                     viewer.Graph = graph;
@@ -113,14 +138,16 @@ namespace graph_folder_crawling
                 else if (searchMethod == "dfs")
                 {
                     // Graph for DFS
-                    graph = new Microsoft.Msagl.Drawing.Graph("graph");
+                    getUnvisitedList();
+                    graph = new Microsoft.Msagl.Drawing.Graph("graph"); //create the graph content
+                    
                     foreach (List<string> location in locationList)
                     {
                         graph.AddEdge(location[0], location[1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
                         graph.FindNode(location[0]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Blue;
                         graph.FindNode(location[1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Blue;
                     }
-                    //create the graph content 
+
                     if (adjacencyList.Count > 0)
                     {
                         foreach (List<string> connection in adjacencyList)
@@ -130,9 +157,17 @@ namespace graph_folder_crawling
                             graph.FindNode(connection[1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
                         }
                     }
-                    // fungsi remove location kalo == connection brarti connection dihapus => cari path hasil biar kaga dobel
-                    // unvisited harus cek connection[1] kalo misal sama => connection tersebut diremove lalu dimasukkan ke unvisitedList
                     
+                    if (unvisitedList.Count > 0)
+                    {
+                        foreach (List<string> connection in unvisitedList)
+                        {
+                            graph.AddEdge(connection[0], connection[1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Black;
+                            if (connection[0] != startDirectory) graph.FindNode(connection[0]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.White;
+                            if (connection[1] != startDirectory) graph.FindNode(connection[1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.White;
+
+                        }
+                    }
                     //bind the graph to the viewer 
                     viewer.Graph = graph;
                     //associate the viewer with the form 
@@ -227,7 +262,7 @@ namespace graph_folder_crawling
             AddFiles(root, ref listFilesAndDirectory);
             foreach(string filedir in listFilesAndDirectory)
             {
-                unvisited.Add(new DirectoryInfo(filedir).Name);
+                unvisited.Add(filedir);
                 adjacencyList.Add(new List<string> { root, filedir });
             }
             
@@ -235,7 +270,7 @@ namespace graph_folder_crawling
             {
                 foreach (string filedir in listFilesAndDirectory)
                 {
-                    int index = unvisited.IndexOf(new DirectoryInfo(filedir).Name);
+                    int index = unvisited.IndexOf(filedir);
                     unvisited.RemoveAt(index);
                     /*
                     if (!findAll)
@@ -278,7 +313,7 @@ namespace graph_folder_crawling
 
                 foreach (string filedir in listFilesAndDirectory)
                 {
-                    adjacencyList.Add(new List<string> { root, filedir });
+                    
                     if (Directory.Exists(filedir)) // if it is a folder, add to queue
                     {
                         toVisitQueue.Enqueue(filedir);
@@ -352,7 +387,7 @@ namespace graph_folder_crawling
         {
             adjacencyList.Clear();
             locationList.Clear();
-
+            unvisitedList.Clear();
             unvisited.Clear();
             fileLocationResult.Clear();
             fileLocationLink.Links.Clear();
@@ -364,6 +399,22 @@ namespace graph_folder_crawling
             clearButton.Enabled = false;
         }
 
+        private void getUnvisitedList()
+        {
+            // unvisited harus cek connection[1] kalo misal sama => connection tersebut diremove lalu dimasukkan ke unvisitedList\
+            
+            for (int i = 0; i < unvisited.Count; i++)
+            {
+                for (int j = 0; j < adjacencyList.Count; j++)
+                {
+                    if (unvisited[i] == adjacencyList[j][1])
+                    {
+                        unvisitedList.Add(new List<string> { adjacencyList[j][0], adjacencyList[j][1] });
+                        adjacencyList.RemoveAt(j);
+                    }
+                }
+            }
+        }
         private void getLocationList()
         {
 
@@ -386,15 +437,6 @@ namespace graph_folder_crawling
             }
 
             locationList.Reverse();
-        }
-
-        private static void removeResultVisited(List<string> pathOFTarget)
-        {
-            foreach (string filedir in pathOFTarget)
-            {
-                int index = visited.IndexOf(new DirectoryInfo(filedir).Name);
-                visited.RemoveAt(index);
-            }
         }
 
         private static void DFSNew(string root, string target, bool findAll)
