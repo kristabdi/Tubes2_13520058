@@ -46,17 +46,21 @@ namespace graph_folder_crawling
 
         private void searchButton_Click(object sender, EventArgs e)
         {
+            clearing();
             if (radioButtonBFS.Checked)
             {
+                // If user choose bfs method
                 searchMethod = "bfs";
             }
             else if (radioButtonDFS.Checked)
             {
+                // If user choose dfs method
                 searchMethod = "dfs";
             }
 
             if (inputFileTextField.Text != "e.g. \"word.pdf\"" && inputFileTextField.Text != "")
             {
+                // Get target filename to search
                 fileName = inputFileTextField.Text;
             }
             else
@@ -66,6 +70,7 @@ namespace graph_folder_crawling
 
             if (fileName == "" && searchMethod == "" && startDirectory == "")
             {
+                // If input is not complete
                 MessageBox.Show("Warning: Input not Complete!");
             }
             else
@@ -80,6 +85,7 @@ namespace graph_folder_crawling
                 {
                     DFS(startDirectory, fileName, findAllOccurence);
                 }
+                // Count time execution
                 watch.Stop();
                 float elapsedMs = watch.ElapsedMilliseconds;
                 execTime = elapsedMs / 1000;
@@ -106,6 +112,7 @@ namespace graph_folder_crawling
                     bool rootColored = false;
                     foreach (List<string> location in locationList)
                     {
+                        // To differentiate between connection that in location
                         if (Enumerable.SequenceEqual(connection, location))
                         {
                             found = true;
@@ -152,6 +159,7 @@ namespace graph_folder_crawling
                         bool unvisited = true;
                         foreach (List<string> connection in adjacencyList)
                         {
+                            // To differentiate unvisited vertices that in adjacencyList
                             if (Enumerable.SequenceEqual(unvisitedElem, connection))
                             {
                                 unvisited = false;
@@ -258,6 +266,32 @@ namespace graph_folder_crawling
             // fileLocationResult nemu, startDirectory tinggal diganti sama fileLocationResult
 
             System.Diagnostics.Process.Start((string)e.Link.LinkData);
+        }
+
+        private void occurenceCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            findAllOccurence = !findAllOccurence;
+        }
+
+        private void clearButton_Click(object sender, EventArgs e)
+        {
+            clearing();
+            clearButton.Enabled = false;
+        }
+
+        private void clearing()
+        {
+            // to reset all list and output (graph or link)
+            adjacencyList.Clear();
+            locationList.Clear();
+            unvisitedList.Clear();
+            found = false;
+            fileLocationResult.Clear();
+            fileLocationLink.Links.Clear();
+            graphPanel.Controls.Clear();
+            fileLocationLink.Text = "";
+            fileLocationLabel.Text = "";
+            timeSpent.Text = "";
         }
 
         private static void DFS(string root, string target, bool findAll)
@@ -376,26 +410,7 @@ namespace graph_folder_crawling
             }
         }
 
-        private void occurenceCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            findAllOccurence = !findAllOccurence;
-        }
-
-        private void clearButton_Click(object sender, EventArgs e)
-        {
-            adjacencyList.Clear();
-            locationList.Clear();
-            unvisitedList.Clear();
-            found = false;
-            fileLocationResult.Clear();
-            fileLocationLink.Links.Clear();
-            graphPanel.Controls.Clear();
-            fileLocationLink.Text = "";
-            fileLocationLabel.Text = "";
-            timeSpent.Text = "";
-            clearButton.Enabled = false;
-        }
-
+        
         private static void getLocationList()
         {
 
