@@ -14,11 +14,11 @@ namespace graph_folder_crawling
     public partial class mainWindow : Form
     {
         // opsi metode pencarian BFS atau DFS
-        private static string searchMethod;
+        private static string searchMethod = "";
         // starting directory
-        private static string startDirectory;
+        private static string startDirectory = "";
         // file name tujuan
-        private static string fileName;
+        private static string fileName = "";
         // Execution time
         private static float execTime;
         // Find all occurence check;
@@ -35,10 +35,9 @@ namespace graph_folder_crawling
         private static bool found = false;
         // location list
         private static List<List<string>> locationList = new List<List<string>>();
-        // visited and unvisited
-        private static List<string> visited = new List<string>();
-        private static List<string> unvisited = new List<string>();
+        // list of unvisited directory or file in queue
         private static List<List<string>> unvisitedList = new List<List<string>>();
+
 
         public mainWindow()
         {
@@ -50,177 +49,177 @@ namespace graph_folder_crawling
             if (radioButtonBFS.Checked)
             {
                 searchMethod = "bfs";
-            } else if (radioButtonDFS.Checked)
+            }
+            else if (radioButtonDFS.Checked)
             {
                 searchMethod = "dfs";
             }
 
-            if (inputFileTextField.Text != "e.g. \"word.pdf\"" || inputFileTextField.Text != "")
+            if (inputFileTextField.Text != "e.g. \"word.pdf\"" && inputFileTextField.Text != "")
             {
                 fileName = inputFileTextField.Text;
-            } else
-            {
-                fileName = "Error: No file input";
-            }
-
-            // BFS and DFS method depends on choice
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-            if (searchMethod == "bfs")
-            {
-                BFS(startDirectory, fileName, findAllOccurence);
-            } else if (searchMethod == "dfs")
-            {
-                DFS(startDirectory, fileName, findAllOccurence);
-            }
-            watch.Stop();
-            float elapsedMs = watch.ElapsedMilliseconds;
-            execTime = elapsedMs / 1000;
-
-            if (fileLocationResult.Count > 0)
-            {
-                for (int i = 0; i < fileLocationResult.Count; i++)
-                {
-                    getLocationList();
-                }
             }
             else
             {
-                getLocationList();
+                fileName = "";
             }
 
-            if (fileLocationResult.Count == 0)
+            if (fileName == "" && searchMethod == "" && startDirectory == "")
             {
-                MessageBox.Show("File not found");
-            } else
+                MessageBox.Show("Warning: Input not Complete!");
+            }
+            else
             {
-                // Menampilkan Graph
+                // BFS and DFS method depends on choice
+                var watch = System.Diagnostics.Stopwatch.StartNew();
                 if (searchMethod == "bfs")
                 {
-                    // Graph for BFS
-                    graph = new Microsoft.Msagl.Drawing.Graph("graph");
-                    getUnvisitedList();
-                    //create the graph content 
-
-                    foreach (List<string> location in locationList)
-                    {
-                        graph.AddEdge(location[0], location[1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
-                        graph.FindNode(location[0]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Blue;
-                        graph.FindNode(location[1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Blue;
-                    }
-
-                    if (adjacencyList.Count > 0)
-                    {
-                        foreach (List<string> connection in adjacencyList)
-                        {
-                            graph.AddEdge(connection[0], connection[1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
-                            graph.FindNode(connection[0]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
-                            graph.FindNode(connection[1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
-                        }
-                    }
-
-
-                    if (unvisitedList.Count > 0)
-                    {
-                        foreach (List<string> connection in unvisitedList)
-                        {
-                            graph.AddEdge(connection[0], connection[1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Black;
-                            if (connection[0] != startDirectory) graph.FindNode(connection[0]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.White;
-                            if (connection[1] != startDirectory) graph.FindNode(connection[1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.White;
-
-                        }
-                    }
-                    //bind the graph to the viewer 
-                    viewer.Graph = graph;
-                    //associate the viewer with the form 
-                    viewer.Dock = System.Windows.Forms.DockStyle.Fill;
-                    graphPanel.Controls.Add(viewer);
+                    BFS(startDirectory, fileName, findAllOccurence);
                 }
                 else if (searchMethod == "dfs")
                 {
-                    // Graph for DFS
-                    getUnvisitedList();
-                    graph = new Microsoft.Msagl.Drawing.Graph("graph"); //create the graph content
-                    
-                    foreach (List<string> location in locationList)
-                    {
-                        graph.AddEdge(location[0], location[1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
-                        graph.FindNode(location[0]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Blue;
-                        graph.FindNode(location[1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Blue;
-                    }
-
-                    if (adjacencyList.Count > 0)
-                    {
-                        foreach (List<string> connection in adjacencyList)
-                        {
-                            graph.AddEdge(connection[0], connection[1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
-                            graph.FindNode(connection[0]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
-                            graph.FindNode(connection[1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
-                        }
-                    }
-                    
-                    if (unvisitedList.Count > 0)
-                    {
-                        foreach (List<string> connection in unvisitedList)
-                        {
-                            graph.AddEdge(connection[0], connection[1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Black;
-                            if (connection[0] != startDirectory) graph.FindNode(connection[0]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.White;
-                            if (connection[1] != startDirectory) graph.FindNode(connection[1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.White;
-
-                        }
-                    }
-                    //bind the graph to the viewer 
-                    viewer.Graph = graph;
-                    //associate the viewer with the form 
-                    viewer.Dock = System.Windows.Forms.DockStyle.Fill;
-                    graphPanel.Controls.Add(viewer);
+                    DFS(startDirectory, fileName, findAllOccurence);
                 }
+                watch.Stop();
+                float elapsedMs = watch.ElapsedMilliseconds;
+                execTime = elapsedMs / 1000;
 
-
-                fileLocationLabel.Text = "Path File :";
-
-                if (findAllOccurence)
+                if (fileLocationResult.Count > 0)
                 {
-                    var stringBuilder = new StringBuilder();
-                    var links = new List<LinkLabel.Link>();
-
-                    foreach (var fileDir in fileLocationResult)
+                    for (int i = 0; i < fileLocationResult.Count; i++)
                     {
-                        if (stringBuilder.Length > 0) stringBuilder.AppendLine();
-
-                        links.Add(new LinkLabel.Link(stringBuilder.Length, fileDir.Length, fileDir));
-                        stringBuilder.Append(fileDir);
-                    }
-
-                    fileLocationLink.Text = stringBuilder.ToString();
-                    foreach (var link in links)
-                    {
-                        fileLocationLink.Links.Add(link);
+                        getLocationList();
                     }
                 }
                 else
                 {
-                    var stringBuilder = new StringBuilder();
-                    var links = new List<LinkLabel.Link>();
-
-                    var fileDir = fileLocationResult.First();
-
-                    if (stringBuilder.Length > 0) stringBuilder.AppendLine();
-
-                    links.Add(new LinkLabel.Link(stringBuilder.Length, fileDir.Length, fileDir));
-                    stringBuilder.Append(fileDir);
-
-                    fileLocationLink.Text = stringBuilder.ToString();
-                    foreach (var link in links)
-                    {
-                        fileLocationLink.Links.Add(link);
-                    }
+                    getLocationList();
                 }
 
-                // execTime disesuaikan dengan lama pencarian
-                timeSpent.Text = "Time Spent: " + execTime + "s";
+                // Graph for DFS and BFS
+                graph = new Microsoft.Msagl.Drawing.Graph("graph");
+                //create the graph content 
+                foreach (List<string> connection in adjacencyList)
+                {
+                    bool found = false;
+                    bool colored = false;
+                    bool rootColored = false;
+                    foreach (List<string> location in locationList)
+                    {
+                        if (Enumerable.SequenceEqual(connection, location))
+                        {
+                            found = true;
+                        }
+                    }
+                    if (found)
+                    {
+                        graph.AddEdge(connection[0], connection[1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
+                        graph.FindNode(connection[0]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Blue;
+                        graph.FindNode(connection[1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Blue;
+                    }
+                    else
+                    {
+                        foreach (List<string> location in locationList)
+                        {
+                            if (Enumerable.SequenceEqual(connection, location))
+                            {
+                                colored = true;
+                            }
+                            if (connection[0] == location[0])
+                            {
+                                rootColored = true;
+                            }
+                        }
+                        graph.AddEdge(connection[0], connection[1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
+                        if (!colored)
+                        {
+                            if (!rootColored)
+                            {
+                                graph.FindNode(connection[0]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
+                            }
+                            graph.FindNode(connection[1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
+                        }
+                    }
+                }
+                if (!findAllOccurence)
+                {
+                    foreach (List<string> unvisitedElem in unvisitedList)
+                    {
+                        bool unvisited = true;
+                        foreach (List<string> connection in adjacencyList)
+                        {
+                            if (Enumerable.SequenceEqual(unvisitedElem, connection))
+                            {
+                                unvisited = false;
+                            }
+                        }
+                        if (unvisited)
+                        {
+                            graph.AddEdge(unvisitedElem[0], unvisitedElem[1]);
+                        }
+                    }
+                }
+                //bind the graph to the viewer 
+                viewer.Graph = graph;
+                //associate the viewer with the form 
+                viewer.Dock = System.Windows.Forms.DockStyle.Fill;
+                graphPanel.Controls.Add(viewer);
 
-                clearButton.Enabled = true;
+                fileLocationLabel.Text = "Path File :";
+
+                if (fileLocationResult.Count == 0)
+                {
+                    fileLocationLink.Text = "No File Found!";
+                }
+                else
+                {
+                    if (findAllOccurence)
+                    {
+                        var stringBuilder = new StringBuilder();
+                        var links = new List<LinkLabel.Link>();
+
+                        foreach (var fileDir in fileLocationResult)
+                        {
+                            if (stringBuilder.Length > 0) stringBuilder.AppendLine();
+
+                            links.Add(new LinkLabel.Link(stringBuilder.Length, fileDir.Length, fileDir));
+                            stringBuilder.Append(fileDir);
+                        }
+
+                        fileLocationLink.Text = stringBuilder.ToString();
+                        foreach (var link in links)
+                        {
+                            fileLocationLink.Links.Add(link);
+                        }
+                    }
+                    else
+                    {
+                        var stringBuilder = new StringBuilder();
+                        var links = new List<LinkLabel.Link>();
+
+                        var fileDir = fileLocationResult.First();
+
+                        if (stringBuilder.Length > 0) stringBuilder.AppendLine();
+
+                        links.Add(new LinkLabel.Link(stringBuilder.Length, fileDir.Length, fileDir));
+                        stringBuilder.Append(fileDir);
+
+                        fileLocationLink.Text = stringBuilder.ToString();
+                        foreach (var link in links)
+                        {
+                            fileLocationLink.Links.Add(link);
+                        }
+                    }
+
+                    // execTime disesuaikan dengan lama pencarian
+                    timeSpent.Text = "Time Spent: " + execTime + "s";
+
+                    clearButton.Enabled = true;
+                }
             }
+
+
+
         }
 
         private void inputFileTextField_Enter(object sender, EventArgs e)
@@ -260,24 +259,15 @@ namespace graph_folder_crawling
         {
             List<string> listFilesAndDirectory = new List<string> { };
             AddFiles(root, ref listFilesAndDirectory);
-            foreach(string filedir in listFilesAndDirectory)
+            foreach (string filedir in listFilesAndDirectory)
             {
-                unvisited.Add(filedir);
-                adjacencyList.Add(new List<string> { root, filedir });
+                unvisitedList.Add(new List<string> { root, filedir });
             }
-            
             if ((listFilesAndDirectory != null) && (listFilesAndDirectory.Count > 0)) // Check if list is not empty and not null
             {
                 foreach (string filedir in listFilesAndDirectory)
                 {
-                    int index = unvisited.IndexOf(filedir);
-                    unvisited.RemoveAt(index);
-                    /*
-                    if (!findAll)
-                    {
-                        adjacencyList.Add(new List<string> { root, filedir });
-                    }
-                    */
+                    adjacencyList.Add(new List<string> { root, filedir });
                     if (File.Exists(filedir))
                     {
                         // path is a file.
@@ -304,8 +294,7 @@ namespace graph_folder_crawling
             AddFiles(root, ref listFilesAndDirectory);
             foreach (string filedir in listFilesAndDirectory)
             {
-                unvisited.Add(new DirectoryInfo(filedir).Name);
-                adjacencyList.Add(new List<string> { root, filedir });
+                unvisitedList.Add(new List<string> { root, filedir });
             }
             if ((listFilesAndDirectory != null) && (listFilesAndDirectory.Count > 0)) // Check if list is not empty and not null
             {
@@ -313,7 +302,7 @@ namespace graph_folder_crawling
 
                 foreach (string filedir in listFilesAndDirectory)
                 {
-                    
+                    adjacencyList.Add(new List<string> { root, filedir });
                     if (Directory.Exists(filedir)) // if it is a folder, add to queue
                     {
                         toVisitQueue.Enqueue(filedir);
@@ -337,6 +326,10 @@ namespace graph_folder_crawling
 
                     List<string> listChildFilesAndDirectory = new List<string> { };
                     AddFiles(currentDirectory, ref listChildFilesAndDirectory);
+                    foreach (string child in listChildFilesAndDirectory)
+                    {
+                        unvisitedList.Add(new List<string> { currentDirectory, child });
+                    }
                     foreach (string child in listChildFilesAndDirectory)
                     {
                         adjacencyList.Add(new List<string> { currentDirectory, child });
@@ -388,10 +381,9 @@ namespace graph_folder_crawling
             adjacencyList.Clear();
             locationList.Clear();
             unvisitedList.Clear();
-            unvisited.Clear();
+            found = false;
             fileLocationResult.Clear();
             fileLocationLink.Links.Clear();
-            // belom bisa clear graph
             graphPanel.Controls.Clear();
             fileLocationLink.Text = "";
             fileLocationLabel.Text = "";
@@ -399,31 +391,23 @@ namespace graph_folder_crawling
             clearButton.Enabled = false;
         }
 
-        private void getUnvisitedList()
-        {
-            // unvisited harus cek connection[1] kalo misal sama => connection tersebut diremove lalu dimasukkan ke unvisitedList\
-            
-            for (int i = 0; i < unvisited.Count; i++)
-            {
-                for (int j = 0; j < adjacencyList.Count; j++)
-                {
-                    if (unvisited[i] == adjacencyList[j][1])
-                    {
-                        unvisitedList.Add(new List<string> { adjacencyList[j][0], adjacencyList[j][1] });
-                        adjacencyList.RemoveAt(j);
-                    }
-                }
-            }
-        }
-        private void getLocationList()
+        private static void getLocationList()
         {
 
             for (int i = adjacencyList.Count - 1; i >= 0; i--)
             {
-                if (Path.GetFileName(adjacencyList[i][1]) == fileName)
+                bool found = false;
+                foreach (List<string> location in locationList)
+                {
+                    if (Enumerable.SequenceEqual(adjacencyList[i], location))
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (Path.GetFileName(adjacencyList[i][1]) == fileName && !found)
                 {
                     locationList.Add(new List<string> { adjacencyList[i][0], adjacencyList[i][1] });
-                    adjacencyList.RemoveAt(i);
                     break;
                 }
             }
@@ -432,48 +416,9 @@ namespace graph_folder_crawling
                 if (locationList.Last()[0] == adjacencyList[i][1])
                 {
                     locationList.Add(new List<string> { adjacencyList[i][0], adjacencyList[i][1] });
-                    adjacencyList.RemoveAt(i);
-                }
-            }
-
-            locationList.Reverse();
-        }
-
-        private static void DFSNew(string root, string target, bool findAll)
-        {
-            List<string> listFilesAndDirectory = new List<string> { };
-            AddFiles(root, ref listFilesAndDirectory);
-            foreach (string filedir in listFilesAndDirectory)
-            {
-                unvisited.Add(new DirectoryInfo(filedir).Name);
-            }
-            if ((listFilesAndDirectory != null) && (listFilesAndDirectory.Count > 0)) // Check if list is not empty and not null
-            {
-                foreach (string filedir in listFilesAndDirectory)
-                {
-                    int index = unvisited.IndexOf(new DirectoryInfo(filedir).Name);
-                    unvisited.RemoveAt(index);
-                    visited.Add(new DirectoryInfo(filedir).Name);
-                    adjacencyList.Add(new List<string> { new DirectoryInfo(root).Name, new DirectoryInfo(filedir).Name });
-                    if (File.Exists(filedir))
-                    {
-                        // path is a file.
-                        if (filedir.Contains(target))
-                        {
-                            // path is the target
-                            //fileLocationResult.Add(filedir);
-                            found = true;
-                        }
-                    }
-                    else if (Directory.Exists(filedir))
-                    {
-                        // path is a directory => call recursive
-                        DFS(filedir, target, findAll);
-                        if (!findAll && found) return;
-                    }
                 }
             }
         }
-        
+
     }
 }
