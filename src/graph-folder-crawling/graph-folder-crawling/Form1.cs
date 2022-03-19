@@ -32,7 +32,7 @@ namespace graph_folder_crawling
         //create a graph object 
         private static Microsoft.Msagl.Drawing.Graph graph;
         // check if file found for find all occurence false, then stop
-        private static bool found = false;
+        private static bool fileFound = false;
         // location list
         private static List<List<string>> locationList = new List<List<string>>();
         // list of unvisited directory or file in queue
@@ -90,14 +90,7 @@ namespace graph_folder_crawling
                 float elapsedMs = watch.ElapsedMilliseconds;
                 execTime = elapsedMs / 1000;
 
-                if (fileLocationResult.Count > 0)
-                {
-                    for (int i = 0; i < fileLocationResult.Count; i++)
-                    {
-                        getLocationList();
-                    }
-                }
-                else
+                for (int i = 0; i < fileLocationResult.Count; i++)
                 {
                     getLocationList();
                 }
@@ -285,7 +278,7 @@ namespace graph_folder_crawling
             adjacencyList.Clear();
             locationList.Clear();
             unvisitedList.Clear();
-            found = false;
+            fileFound = false;
             fileLocationResult.Clear();
             fileLocationLink.Links.Clear();
             graphPanel.Controls.Clear();
@@ -306,7 +299,13 @@ namespace graph_folder_crawling
             {
                 foreach (string filedir in listFilesAndDirectory)
                 {
-                    adjacencyList.Add(new List<string> { root, filedir });
+                    if (!fileFound && !findAll)
+                    {
+                        adjacencyList.Add(new List<string> { root, filedir });
+                    } else if (findAll)
+                    {
+                        adjacencyList.Add(new List<string> { root, filedir });
+                    }
                     if (File.Exists(filedir))
                     {
                         // path is a file.
@@ -314,14 +313,14 @@ namespace graph_folder_crawling
                         {
                             // path is the target
                             fileLocationResult.Add(filedir);
-                            found = true;
+                            fileFound = true;
                         }
                     }
                     else if (Directory.Exists(filedir))
                     {
                         // path is a directory => call recursive
                         DFS(filedir, target, findAll);
-                        if (!findAll && found) return;
+                        if (!findAll && fileFound) return;
                     }
                 }
             }
