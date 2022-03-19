@@ -324,6 +324,10 @@ namespace graph_folder_crawling
                     AddFiles(currentDirectory, ref listChildFilesAndDirectory);
                     foreach (string child in listChildFilesAndDirectory)
                     {
+                        unvisitedList.Add(new List<string> { currentDirectory, child });
+                    }
+                    foreach (string child in listChildFilesAndDirectory)
+                    {
                         adjacencyList.Add(new List<string> { currentDirectory, child });
                         if (Directory.Exists(child)) // if it is a folder, add to queue
                         {
