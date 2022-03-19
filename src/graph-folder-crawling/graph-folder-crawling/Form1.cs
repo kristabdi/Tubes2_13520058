@@ -116,6 +116,8 @@ namespace graph_folder_crawling
                         graph.AddEdge(connection[0], connection[1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
                         graph.FindNode(connection[0]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Blue;
                         graph.FindNode(connection[1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Blue;
+                        graph.FindNode(connection[0]).LabelText = Path.GetFileName(connection[0]);
+                        graph.FindNode(connection[1]).LabelText = Path.GetFileName(connection[1]);
                     }
                     else
                     {
@@ -136,8 +138,10 @@ namespace graph_folder_crawling
                             if (!rootColored)
                             {
                                 graph.FindNode(connection[0]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
+                                graph.FindNode(connection[0]).LabelText = Path.GetFileName(connection[0]);
                             }
                             graph.FindNode(connection[1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
+                            graph.FindNode(connection[1]).LabelText = Path.GetFileName(connection[1]);
                         }
                     }
                 }
@@ -155,7 +159,8 @@ namespace graph_folder_crawling
                         }
                         if (unvisited)
                         {
-                            graph.AddEdge(unvisitedElem[0], unvisitedElem[1]);
+                            graph.AddEdge(unvisitedElem[0], unvisitedElem[1]);;
+                            graph.FindNode(unvisitedElem[1]).LabelText = Path.GetFileName(unvisitedElem[1]);
                         }
                     }
                 }
