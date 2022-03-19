@@ -377,6 +377,7 @@ namespace graph_folder_crawling
             adjacencyList.Clear();
             locationList.Clear();
             unvisitedList.Clear();
+            found = false;
             fileLocationResult.Clear();
             fileLocationLink.Links.Clear();
             graphPanel.Controls.Clear();
