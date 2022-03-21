@@ -30,7 +30,7 @@ Untuk menjalankan aplikasi  dapat dilakukan dengan 2 cara antara lain
     5.  Visual studio akan secara otomatis melakukan *build* terhadap aplikasi ini dan jika build berhasil aplikasi akan segera dijalankan.
 - Via Executable Code
 
-    Untuk menjalankan aplikasi via executable code, Anda cukup buka folder bin dan double klik pada file graph-folder-crawling
+    Untuk menjalankan aplikasi via executable code, Anda cukup buka folder bin dan double klik pada file graph-folder-crawling.exe (ekstensi ".exe").
 
 ## How To Use
 1. Jalankan dan buka aplikasi folder crawling (via file solution atau via executable code).
