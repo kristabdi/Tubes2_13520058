@@ -113,6 +113,7 @@ namespace graph_folder_crawling
                     }
                     if (found)
                     {
+                        // add edge for nodes that is included for path to target
                         graph.AddEdge(connection[0], connection[1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
                         graph.FindNode(connection[0]).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
                         graph.FindNode(connection[1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Blue;
@@ -123,6 +124,7 @@ namespace graph_folder_crawling
                     {
                         foreach (List<string> location in locationList)
                         {
+                            // to ensure not double coloring
                             if (Enumerable.SequenceEqual(connection, location))
                             {
                                 colored = true;
@@ -137,9 +139,11 @@ namespace graph_folder_crawling
                         {
                             if (!rootColored)
                             {
+                                // coloring parent node into red if not colored yet
                                 graph.FindNode(connection[0]).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
                                 graph.FindNode(connection[0]).LabelText = Path.GetFileName(connection[0]);
                             }
+                            // color child node into red
                             graph.FindNode(connection[1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
                             graph.FindNode(connection[1]).LabelText = Path.GetFileName(connection[1]);
                         }
@@ -155,12 +159,14 @@ namespace graph_folder_crawling
                             // To differentiate unvisited vertices that in adjacencyList
                             if (Enumerable.SequenceEqual(unvisitedElem, connection))
                             {
+                                // set unvisited if not in connection to ensure not double coloring
                                 unvisited = false;
                             }
                         }
                         if (unvisited)
                         {
-                            graph.AddEdge(unvisitedElem[0], unvisitedElem[1]);;
+                            // if not unvisited, coloring black
+                            graph.AddEdge(unvisitedElem[0], unvisitedElem[1]); ;
                             graph.FindNode(unvisitedElem[1]).LabelText = Path.GetFileName(unvisitedElem[1]);
                         }
                     }
@@ -293,6 +299,7 @@ namespace graph_folder_crawling
             AddFiles(root, ref listFilesAndDirectory);
             foreach (string filedir in listFilesAndDirectory)
             {
+                // add every node in list that consist nodes not visited yet
                 unvisitedList.Add(new List<string> { root, filedir });
             }
             if ((listFilesAndDirectory != null) && (listFilesAndDirectory.Count > 0)) // Check if list is not empty and not null
@@ -301,9 +308,12 @@ namespace graph_folder_crawling
                 {
                     if (!fileFound && !findAll)
                     {
+                        // if file not found and not findAll
                         adjacencyList.Add(new List<string> { root, filedir });
-                    } else if (findAll)
+                    }
+                    else if (findAll)
                     {
+                        // if want to find all occurences of target
                         adjacencyList.Add(new List<string> { root, filedir });
                     }
                     if (File.Exists(filedir))
@@ -409,7 +419,7 @@ namespace graph_folder_crawling
             }
         }
 
-        
+
         private static void getLocationList()
         {
 
