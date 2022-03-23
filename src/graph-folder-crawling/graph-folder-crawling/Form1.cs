@@ -194,7 +194,7 @@ namespace graph_folder_crawling
                         {
                             if (stringBuilder.Length > 0) stringBuilder.AppendLine();
 
-                            links.Add(new LinkLabel.Link(stringBuilder.Length, fileDir.Length, fileDir));
+                            links.Add(new LinkLabel.Link(stringBuilder.Length, fileDir.Length, Path.GetDirectoryName(fileDir)));
                             stringBuilder.Append(fileDir);
                         }
 
@@ -213,7 +213,7 @@ namespace graph_folder_crawling
 
                         if (stringBuilder.Length > 0) stringBuilder.AppendLine();
 
-                        links.Add(new LinkLabel.Link(stringBuilder.Length, fileDir.Length, fileDir));
+                        links.Add(new LinkLabel.Link(stringBuilder.Length, fileDir.Length, Path.GetDirectoryName(fileDir)));
                         stringBuilder.Append(fileDir);
 
                         fileLocationLink.Text = stringBuilder.ToString();
