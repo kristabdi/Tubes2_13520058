@@ -16,7 +16,8 @@ simpul putih dan sisi hitam - jalur yang belum ditelusuri
 ## How To Run
 Sebelum menjalankan aplikasi, pastikan Anda sudah melakukan download atau clone repository ini.
 ```
-git clone https://github.com/kristabdi/graph-folder-crawling
+git clone https://github.com/kristabdi/Tubes2-13520058
+cd Tubes2-13520058
 ```
 Untuk menjalankan aplikasi  dapat dilakukan dengan 2 cara antara lain 
 - Via File Solution dengan Visual Studio
